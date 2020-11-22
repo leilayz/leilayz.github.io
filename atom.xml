@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://leilayz.github.io</id>
     <title>许愿</title>
-    <updated>2020-11-22T06:20:09.578Z</updated>
+    <updated>2020-11-22T06:22:57.430Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://leilayz.github.io"/>
     <link rel="self" href="https://leilayz.github.io/atom.xml"/>
@@ -15,7 +15,7 @@
         <id>https://leilayz.github.io/post/c-you-yuan-han-shu-he-you-yuan-lei/</id>
         <link href="https://leilayz.github.io/post/c-you-yuan-han-shu-he-you-yuan-lei/">
         </link>
-        <updated>2020-11-21T15:39:35.000Z</updated>
+        <updated>2020-11-21T01:39:35.000Z</updated>
         <content type="html"><![CDATA[<h1 id="友元函数">友元函数</h1>
 <p><strong>目的</strong>：让非成员函数即普通函数或其他类可以访问类的私有成员。<br>
 <strong>优点</strong>：友元的作用在于提高程序的运行效率（即减少了类型检查和安全性检查等都需要的时间开销）。<br>
