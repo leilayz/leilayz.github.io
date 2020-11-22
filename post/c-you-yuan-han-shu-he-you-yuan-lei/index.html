@@ -1,0 +1,330 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>C++ 友元函数和友元类 | 许愿</title>
+<link rel="shortcut icon" href="https://leilayz.github.io/favicon.ico?v=1606026005799">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://leilayz.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="C++ 友元函数和友元类 | 许愿 - Atom Feed" href="https://leilayz.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="友元函数
+目的：让非成员函数即普通函数或其他类可以访问类的私有成员。
+优点：友元的作用在于提高程序的运行效率（即减少了类型检查和安全性检查等都需要的时间开销）。
+缺点：破坏了类的封装性和隐藏性，使得非成员函数可以访问类的私有成员。
+#inc..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://leilayz.github.io">
+  <img class="avatar" src="https://leilayz.github.io/images/avatar.png?v=1606026005799" alt="">
+  </a>
+  <h1 class="site-title">
+    许愿
+  </h1>
+  <p class="site-description">
+    永远相信美好的事情即将发生。
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              C++ 友元函数和友元类
+            </h2>
+            <div class="post-info">
+              <span>
+                2020-11-21
+              </span>
+              <span>
+                3 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="友元函数">友元函数</h1>
+<p><strong>目的</strong>：让非成员函数即普通函数或其他类可以访问类的私有成员。<br>
+<strong>优点</strong>：友元的作用在于提高程序的运行效率（即减少了类型检查和安全性检查等都需要的时间开销）。<br>
+<strong>缺点</strong>：破坏了类的封装性和隐藏性，使得非成员函数可以访问类的私有成员。</p>
+<pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+ 
+using namespace std;
+ 
+class Box
+{
+   double width;
+public:
+   friend void printWidth( Box box );
+   void setWidth( double wid );
+};
+ 
+// 成员函数定义
+void Box::setWidth( double wid )
+{
+    width = wid;
+}
+ 
+// 请注意：printWidth() 不是任何类的成员函数
+void printWidth( Box box )
+{
+   /* 因为 printWidth() 是 Box 的友元，它可以直接访问该类的任何成员 */
+   cout &lt;&lt; &quot;Width of box : &quot; &lt;&lt; box.width &lt;&lt;endl;
+}
+ 
+// 程序的主函数
+int main( )
+{
+   Box box;
+ 
+   // 使用成员函数设置宽度
+   box.setWidth(10.0);
+   
+   // 使用友元函数输出宽度
+   printWidth( box );
+ 
+   return 0;
+}
+</code></pre>
+<h1 id="成员函数类型的友元函数">成员函数类型的友元函数</h1>
+<p>将Volume类的一个成员函数在Box类中声明为友元函数，使得Volume类对象可访问Box类中所有成员。</p>
+<pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+
+using namespace std;
+
+class Box;//类的前向声明
+ 
+class Volume {
+public:
+   double getVolume(Box box);
+};
+
+class Box
+{
+   double width;
+   double length;
+public:
+   friend double Volume::getVolume(Box box);
+   void setWidth(double wid);
+   void setLength(double len);
+};
+ 
+// 成员函数定义
+void Box::setWidth(double wid)
+{
+    width = wid;
+}
+
+void Box::setLength(double len)
+{
+    length = len;
+}
+
+//注意成员函数类的友元函数的位置，要定义在类之后
+double Volume::getVolume(Box box) {
+   return box.width * box.length;
+}
+ 
+// 程序的主函数
+int main( )
+{
+   Box box;
+ 
+   // 使用成员函数设置宽度
+   box.setWidth(10.0);
+   box.setLength(20.0);
+
+   Volume v;
+   cout&lt;&lt;v.getVolume(box);
+ 
+   return 0;
+}
+</code></pre>
+<h1 id="友元类">友元类</h1>
+<p>将Volume类定义为Box类的友元类后，Volume类可以访问Box类的所有成员。</p>
+<pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+
+using namespace std;
+
+class Box;//类的前向声明
+ 
+class Volume {
+public:
+   double getVolume(Box box);
+};
+
+class Box
+{
+   double width;
+   double length;
+public:
+   friend class Volume;
+   void setWidth(double wid);
+   void setLength(double len);
+};
+ 
+// 成员函数定义
+void Box::setWidth(double wid)
+{
+    width = wid;
+}
+
+void Box::setLength(double len)
+{
+    length = len;
+}
+
+//注意成员函数类的友元函数的位置，要定义在类之后
+double Volume::getVolume(Box box) {
+   return box.width * box.length;
+}
+ 
+// 程序的主函数
+int main( )
+{
+   Box box;
+ 
+   // 使用成员函数设置宽度
+   box.setWidth(10.0);
+   box.setLength(20.0);
+
+   Volume v;
+   cout&lt;&lt;v.getVolume(box);
+ 
+   return 0;
+}
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E5%8F%8B%E5%85%83%E5%87%BD%E6%95%B0">友元函数</a></li>
+<li><a href="#%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%8F%8B%E5%85%83%E5%87%BD%E6%95%B0">成员函数类型的友元函数</a></li>
+<li><a href="#%E5%8F%8B%E5%85%83%E7%B1%BB">友元类</a></li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://leilayz.github.io/post/java-ke-hu-duan-fu-wu-qi-tong-xin/">
+              <h3 class="post-title">
+                Java 客户端服务器通信
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://leilayz.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

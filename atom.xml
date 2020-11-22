@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://leilayz.github.io</id>
     <title>许愿</title>
-    <updated>2020-11-22T05:20:21.955Z</updated>
+    <updated>2020-11-22T06:20:09.578Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://leilayz.github.io"/>
     <link rel="self" href="https://leilayz.github.io/atom.xml"/>
@@ -10,6 +10,171 @@
     <logo>https://leilayz.github.io/images/avatar.png</logo>
     <icon>https://leilayz.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 许愿</rights>
+    <entry>
+        <title type="html"><![CDATA[C++ 友元函数和友元类]]></title>
+        <id>https://leilayz.github.io/post/c-you-yuan-han-shu-he-you-yuan-lei/</id>
+        <link href="https://leilayz.github.io/post/c-you-yuan-han-shu-he-you-yuan-lei/">
+        </link>
+        <updated>2020-11-21T15:39:35.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="友元函数">友元函数</h1>
+<p><strong>目的</strong>：让非成员函数即普通函数或其他类可以访问类的私有成员。<br>
+<strong>优点</strong>：友元的作用在于提高程序的运行效率（即减少了类型检查和安全性检查等都需要的时间开销）。<br>
+<strong>缺点</strong>：破坏了类的封装性和隐藏性，使得非成员函数可以访问类的私有成员。</p>
+<pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+ 
+using namespace std;
+ 
+class Box
+{
+   double width;
+public:
+   friend void printWidth( Box box );
+   void setWidth( double wid );
+};
+ 
+// 成员函数定义
+void Box::setWidth( double wid )
+{
+    width = wid;
+}
+ 
+// 请注意：printWidth() 不是任何类的成员函数
+void printWidth( Box box )
+{
+   /* 因为 printWidth() 是 Box 的友元，它可以直接访问该类的任何成员 */
+   cout &lt;&lt; &quot;Width of box : &quot; &lt;&lt; box.width &lt;&lt;endl;
+}
+ 
+// 程序的主函数
+int main( )
+{
+   Box box;
+ 
+   // 使用成员函数设置宽度
+   box.setWidth(10.0);
+   
+   // 使用友元函数输出宽度
+   printWidth( box );
+ 
+   return 0;
+}
+</code></pre>
+<h1 id="成员函数类型的友元函数">成员函数类型的友元函数</h1>
+<p>将Volume类的一个成员函数在Box类中声明为友元函数，使得Volume类对象可访问Box类中所有成员。</p>
+<pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+
+using namespace std;
+
+class Box;//类的前向声明
+ 
+class Volume {
+public:
+   double getVolume(Box box);
+};
+
+class Box
+{
+   double width;
+   double length;
+public:
+   friend double Volume::getVolume(Box box);
+   void setWidth(double wid);
+   void setLength(double len);
+};
+ 
+// 成员函数定义
+void Box::setWidth(double wid)
+{
+    width = wid;
+}
+
+void Box::setLength(double len)
+{
+    length = len;
+}
+
+//注意成员函数类的友元函数的位置，要定义在类之后
+double Volume::getVolume(Box box) {
+   return box.width * box.length;
+}
+ 
+// 程序的主函数
+int main( )
+{
+   Box box;
+ 
+   // 使用成员函数设置宽度
+   box.setWidth(10.0);
+   box.setLength(20.0);
+
+   Volume v;
+   cout&lt;&lt;v.getVolume(box);
+ 
+   return 0;
+}
+</code></pre>
+<h1 id="友元类">友元类</h1>
+<p>将Volume类定义为Box类的友元类后，Volume类可以访问Box类的所有成员。</p>
+<pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+
+using namespace std;
+
+class Box;//类的前向声明
+ 
+class Volume {
+public:
+   double getVolume(Box box);
+};
+
+class Box
+{
+   double width;
+   double length;
+public:
+   friend class Volume;
+   void setWidth(double wid);
+   void setLength(double len);
+};
+ 
+// 成员函数定义
+void Box::setWidth(double wid)
+{
+    width = wid;
+}
+
+void Box::setLength(double len)
+{
+    length = len;
+}
+
+//注意成员函数类的友元函数的位置，要定义在类之后
+double Volume::getVolume(Box box) {
+   return box.width * box.length;
+}
+ 
+// 程序的主函数
+int main( )
+{
+   Box box;
+ 
+   // 使用成员函数设置宽度
+   box.setWidth(10.0);
+   box.setLength(20.0);
+
+   Volume v;
+   cout&lt;&lt;v.getVolume(box);
+ 
+   return 0;
+}
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Java 客户端服务器通信]]></title>
         <id>https://leilayz.github.io/post/java-ke-hu-duan-fu-wu-qi-tong-xin/</id>
