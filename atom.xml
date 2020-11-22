@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://leilayz.github.io</id>
     <title>许愿</title>
-    <updated>2020-11-18T08:02:55.621Z</updated>
+    <updated>2020-11-22T05:09:30.354Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://leilayz.github.io"/>
     <link rel="self" href="https://leilayz.github.io/atom.xml"/>
@@ -10,6 +10,70 @@
     <logo>https://leilayz.github.io/images/avatar.png</logo>
     <icon>https://leilayz.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 许愿</rights>
+    <entry>
+        <title type="html"><![CDATA[Java 客户端服务器通信]]></title>
+        <id>https://leilayz.github.io/post/java-ke-hu-duan-fu-wu-qi-tong-xin/</id>
+        <link href="https://leilayz.github.io/post/java-ke-hu-duan-fu-wu-qi-tong-xin/">
+        </link>
+        <updated>2020-11-21T00:37:27.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="代码">代码</h1>
+<h2 id="客户端">客户端</h2>
+<p><strong>client.java</strong></p>
+<pre><code>import java.net.*;
+import java.io.*;
+
+public class client {
+	public static void main(String[] args) throws IOException {
+        //端口号可根据需要改变
+		Socket s = new Socket(&quot;localhost&quot;, 4999);
+
+		PrintWriter pr = new PrintWriter(s.getOutputStream());
+		pr.println(&quot;is it working?&quot;);
+		pr.flush();
+
+		InputStreamReader in = new InputStreamReader(s.getInputStream());
+		BufferedReader bf = new BufferedReader(in);
+
+		String str = bf.readLine();
+		System.out.println(&quot;server : &quot; + str);
+	}	
+}
+</code></pre>
+<h2 id="服务器">服务器</h2>
+<p><strong>server.java</strong></p>
+<pre><code>import java.net.*;
+import java.io.*;
+
+public class server {
+	public static void main(String[] args) throws IOException {
+        //端口号可根据需要改变
+		ServerSocket ss = new ServerSocket(4999);
+		Socket s = ss.accept();
+
+		System.out.println(&quot;Client connected&quot;);
+
+		InputStreamReader in = new InputStreamReader(s.getInputStream());
+		BufferedReader bf = new BufferedReader(in);
+
+		String str = bf.readLine();
+		System.out.println(&quot;Client : &quot; + str);
+
+		PrintWriter pr = new PrintWriter(s.getOutputStream());
+		pr.println(&quot;yes&quot;);
+		pr.flush();
+	}	
+}
+
+</code></pre>
+<h1 id="测试">测试</h1>
+<h3 id="1-运行服务器">1. 运行服务器</h3>
+<figure data-type="image" tabindex="1"><img src="https://leilayz.github.io/post-images/1606020926665.png" alt="" loading="lazy"></figure>
+<h3 id="2-运行客户端">2. 运行客户端</h3>
+<p><img src="https://leilayz.github.io/post-images/1606021247871.png" alt="" loading="lazy"><br>
+运行同时就会看到结果客户端的结果，同时服务器端的结果为：<br>
+<img src="https://leilayz.github.io/post-images/1606021334397.png" alt="" loading="lazy"></p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Hello World (不能随便改github名字)]]></title>
         <id>https://leilayz.github.io/post/hello-world-bu-neng-sui-bian-gai-github-ming-zi/</id>

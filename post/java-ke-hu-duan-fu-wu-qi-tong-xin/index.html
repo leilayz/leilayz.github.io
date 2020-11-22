@@ -2,24 +2,24 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>关于 | 许愿</title>
+<title>Java 客户端服务器通信 | 许愿</title>
 <link rel="shortcut icon" href="https://leilayz.github.io/favicon.ico?v=1606021768397">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://leilayz.github.io/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="关于 | 许愿 - Atom Feed" href="https://leilayz.github.io/atom.xml">
+<link rel="alternate" type="application/atom+xml" title="Java 客户端服务器通信 | 许愿 - Atom Feed" href="https://leilayz.github.io/atom.xml">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
 
 
 
-    <meta name="description" content="
-欢迎来到我的小站呀，很高兴遇见你！🤝
+    <meta name="description" content="代码
+客户端
+client.java
+import java.net.*;
+import java.io.*;
 
-🏠 关于本站
-👨‍💻 博主是谁
-⛹ 兴趣爱好
-📬 联系我呀
-..." />
-    <meta name="keywords" content="" />
+public class client {
+	public static void main(String[] args) t..." />
+    <meta name="keywords" content="Java,客户端,服务器" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
   </head>
@@ -81,37 +81,103 @@
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              关于
+              Java 客户端服务器通信
             </h2>
             <div class="post-info">
               <span>
-                2019-01-25
+                2020-11-20
               </span>
               <span>
-                1 min read
+                2 min read
               </span>
+              
+                <a href="https://leilayz.github.io/tag/iqgpYVGRC/" class="post-tag">
+                  # Java
+                </a>
+              
+                <a href="https://leilayz.github.io/tag/YiJ-Fit4Yn/" class="post-tag">
+                  # 客户端
+                </a>
+              
+                <a href="https://leilayz.github.io/tag/Q0ZhORR5Ew/" class="post-tag">
+                  # 服务器
+                </a>
               
             </div>
             
             <div class="post-content-wrapper">
               <div class="post-content">
-                <blockquote>
-<p>欢迎来到我的小站呀，很高兴遇见你！🤝</p>
-</blockquote>
-<h2 id="关于本站">🏠 关于本站</h2>
-<h2 id="博主是谁">👨‍💻 博主是谁</h2>
-<h2 id="兴趣爱好">⛹ 兴趣爱好</h2>
-<h2 id="联系我呀">📬 联系我呀</h2>
+                <h1 id="代码">代码</h1>
+<h2 id="客户端">客户端</h2>
+<p><strong>client.java</strong></p>
+<pre><code>import java.net.*;
+import java.io.*;
+
+public class client {
+	public static void main(String[] args) throws IOException {
+        //端口号可根据需要改变
+		Socket s = new Socket(&quot;localhost&quot;, 4999);
+
+		PrintWriter pr = new PrintWriter(s.getOutputStream());
+		pr.println(&quot;is it working?&quot;);
+		pr.flush();
+
+		InputStreamReader in = new InputStreamReader(s.getInputStream());
+		BufferedReader bf = new BufferedReader(in);
+
+		String str = bf.readLine();
+		System.out.println(&quot;server : &quot; + str);
+	}	
+}
+</code></pre>
+<h2 id="服务器">服务器</h2>
+<p><strong>server.java</strong></p>
+<pre><code>import java.net.*;
+import java.io.*;
+
+public class server {
+	public static void main(String[] args) throws IOException {
+        //端口号可根据需要改变
+		ServerSocket ss = new ServerSocket(4999);
+		Socket s = ss.accept();
+
+		System.out.println(&quot;Client connected&quot;);
+
+		InputStreamReader in = new InputStreamReader(s.getInputStream());
+		BufferedReader bf = new BufferedReader(in);
+
+		String str = bf.readLine();
+		System.out.println(&quot;Client : &quot; + str);
+
+		PrintWriter pr = new PrintWriter(s.getOutputStream());
+		pr.println(&quot;yes&quot;);
+		pr.flush();
+	}	
+}
+
+</code></pre>
+<h1 id="测试">测试</h1>
+<h3 id="1-运行服务器">1. 运行服务器</h3>
+<figure data-type="image" tabindex="1"><img src="https://leilayz.github.io/post-images/1606020926665.png" alt="" loading="lazy"></figure>
+<h3 id="2-运行客户端">2. 运行客户端</h3>
+<p><img src="https://leilayz.github.io/post-images/1606021247871.png" alt="" loading="lazy"><br>
+运行同时就会看到结果客户端的结果，同时服务器端的结果为：<br>
+<img src="https://leilayz.github.io/post-images/1606021334397.png" alt="" loading="lazy"></p>
 
               </div>
               <div class="toc-container">
                 <ul class="markdownIt-TOC">
-<li>
+<li><a href="#%E4%BB%A3%E7%A0%81">代码</a>
 <ul>
-<li><a href="#%E5%85%B3%E4%BA%8E%E6%9C%AC%E7%AB%99">🏠 关于本站</a></li>
-<li><a href="#%E5%8D%9A%E4%B8%BB%E6%98%AF%E8%B0%81">👨‍💻 博主是谁</a></li>
-<li><a href="#%E5%85%B4%E8%B6%A3%E7%88%B1%E5%A5%BD">⛹ 兴趣爱好</a></li>
-<li><a href="#%E8%81%94%E7%B3%BB%E6%88%91%E5%91%80">📬 联系我呀</a></li>
+<li><a href="#%E5%AE%A2%E6%88%B7%E7%AB%AF">客户端</a></li>
+<li><a href="#%E6%9C%8D%E5%8A%A1%E5%99%A8">服务器</a></li>
+</ul>
+</li>
+<li><a href="#%E6%B5%8B%E8%AF%95">测试</a><br>
+*
+<ul>
+<li><a href="#1-%E8%BF%90%E8%A1%8C%E6%9C%8D%E5%8A%A1%E5%99%A8">1. 运行服务器</a></li>
+<li><a href="#2-%E8%BF%90%E8%A1%8C%E5%AE%A2%E6%88%B7%E7%AB%AF">2. 运行客户端</a></li>
 </ul>
 </li>
 </ul>
@@ -121,6 +187,15 @@
           </article>
         </div>
 
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://leilayz.github.io/post/hello-world-bu-neng-sui-bian-gai-github-ming-zi/">
+              <h3 class="post-title">
+                Hello World (不能随便改github名字)
+              </h3>
+            </a>
+          </div>
         
 
         
