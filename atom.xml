@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://leilayz.github.io</id>
     <title>许愿</title>
-    <updated>2020-11-22T06:22:57.430Z</updated>
+    <updated>2020-12-17T07:29:04.414Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://leilayz.github.io"/>
     <link rel="self" href="https://leilayz.github.io/atom.xml"/>
@@ -10,6 +10,331 @@
     <logo>https://leilayz.github.io/images/avatar.png</logo>
     <icon>https://leilayz.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 许愿</rights>
+    <entry>
+        <title type="html"><![CDATA[爬虫——requests模块]]></title>
+        <id>https://leilayz.github.io/post/pa-chong-1/</id>
+        <link href="https://leilayz.github.io/post/pa-chong-1/">
+        </link>
+        <updated>2020-12-14T17:08:13.000Z</updated>
+        <content type="html"><![CDATA[<p>robots.txt协议：<br>
+君子协议，规定了网站中哪些数据可以被爬虫爬取，哪些数据不可以被爬取。</p>
+<p>http协议：</p>
+<ol>
+<li>概念： 服务器和客户端进行数据交互的一种形式。<br>
+常用请求头信息</li>
+<li>User-Agent: 请求载体的身份标识。</li>
+<li>Connection: 请求完毕后，是断开连接还是保持连接。<br>
+常用响应头信息</li>
+<li>Content-Type: 服务器响应回客户端的数据类型</li>
+</ol>
+<p>https协议：</p>
+<ol>
+<li>安全的超文本传输协议</li>
+</ol>
+<p>加密方式：</p>
+<ol>
+<li>对称密钥加密</li>
+<li>非对称密钥加密</li>
+<li>证书密钥加密</li>
+</ol>
+<p>使用模块：<br>
+urllib模块（过于古老）（×）<br>
+requests 模块 : Python中原生的一款基于网络请求的模块，功能强大，简单便捷，效率高。</p>
+<p>如何使用：</p>
+<ol>
+<li>指定URL</li>
+<li>发起请求</li>
+<li>获取响应数据</li>
+<li>持久化存储</li>
+</ol>
+<p>环境安装：<br>
+pip install requests</p>
+<p>实战编码：</p>
+<ol>
+<li>爬取搜狗首页</li>
+</ol>
+<p>巩固：</p>
+<ol>
+<li>简易网页采集器
+<ol>
+<li>UA检测</li>
+<li>UA伪装</li>
+</ol>
+</li>
+<li>百度翻译
+<ol>
+<li>post请求（携带了参数）</li>
+<li>响应数据是一组json数据</li>
+</ol>
+</li>
+<li>豆瓣电影：</li>
+<li>肯德基餐厅:</li>
+<li>国家药品进度管理总局化妆品生产许可证
+<ol>
+<li>动态加载数据</li>
+<li>首页中对应的企业信息数据是通过ajax动态请求到的</li>
+<li>同光对详情页url的观察发现：
+<ol>
+<li>url的域名都是一样的，只有携带的参数（id）不一样</li>
+<li>id值可以从首页对应的ajax数据中得到</li>
+<li>域名和id值组合成新的url访问详情数据</li>
+<li>详情页的数据也是ajax动态加载得到的。</li>
+<li>观察到所有post请求的url都是一样的，只有id值是不同的。如果可以批量获取多家企业的id后，就可以将id和url形成完整的AJAX请求</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<p>展望：<br>
+数据解析：<br>
+聚焦爬虫<br>
+1. 正则<br>
+2. bs4<br>
+3. xpath</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[排序]]></title>
+        <id>https://leilayz.github.io/post/pai-xu/</id>
+        <link href="https://leilayz.github.io/post/pai-xu/">
+        </link>
+        <updated>2020-11-21T18:21:07.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="排序算法对比">排序算法对比</h1>
+<figure data-type="image" tabindex="1"><img src="https://leilayz.github.io/post-images/1606084540367.PNG" alt="" loading="lazy"></figure>
+<h1 id="冒泡排序">冒泡排序</h1>
+<pre><code>//冒泡排序
+void bubbleSort(vector&lt;int&gt; &amp;nums) {
+    int n = nums.size();
+
+    for(int i = 0; i &lt; n; i++) { //n个数字，比较N次，每次将一个元素放到正确的位置
+        int flag = false;
+        for(int j = 0; j &lt; n - i - 1; j++) {
+            if(nums[j] &gt; nums[j + 1]){
+                swap(nums[j],nums[j + 1]);
+                flag = true;
+            }
+        }
+        if(!flag) break;
+
+    }
+}
+</code></pre>
+<h1 id="插入排序">插入排序</h1>
+<pre><code>//插入排序
+void insertionSort(vector&lt;int&gt; &amp;nums) {
+    int n = nums.size();
+
+    for (int i = 1; i &lt; n; i++)
+    {
+        int temp = nums[i];
+        int j = i; //寻找插入位置
+
+        while (j - 1 &gt;= 0 &amp;&amp; temp &lt; nums[j - 1])
+        {
+            nums[j] = nums[j - 1];
+            j--;
+        }
+       
+        nums[j] = temp;
+    }
+}
+</code></pre>
+<h1 id="选择排序">选择排序</h1>
+<pre><code>//选择排序
+void selectionSort(vector&lt;int&gt; &amp;nums) {
+    int n = nums.size();
+
+    for (int i = 0; i &lt; n - 1; i++) //因为在底下是从i 的后面找，所以这里i &lt; n - 1
+    {
+        int min = i;
+
+        for (int j = i + 1; j &lt; n; j++) //
+        {
+            if (nums[j] &lt; nums[min])
+            {
+                min = j;
+            }
+            
+        }
+        swap(nums[i],nums[min]); 
+    }
+}
+</code></pre>
+<h1 id="希尔排序">希尔排序</h1>
+<pre><code>//希尔排序
+void shellSort(vector&lt;int&gt; &amp;nums) {
+    int n = nums.size();
+
+    for (int gap = n / 2; gap &gt; 0; gap /= 2)
+    {
+        for (int i = gap; i &lt; n; i++)
+        {
+            int j = i; // 寻找插入位置
+            int temp = nums[j];
+
+            while (j - gap &gt;= 0 &amp;&amp; nums[j - gap] &gt; temp)
+            {
+                    //swap(nums[j], nums[j - gap]);
+                nums[j] = nums[j - gap];
+                j -= gap;
+            }
+            nums[j] = temp;
+        }
+    }
+}
+</code></pre>
+<h1 id="归并排序">归并排序</h1>
+<p>归并排序分为两个步骤，先分成左右两边，再合并起来。</p>
+<pre><code>void mergeSort(vector&lt;int&gt; &amp;nums) {
+    vector&lt;int&gt; temp(nums.size(), 0);
+    mergeSortSort(nums, 0, nums.size() - 1, temp);
+}
+
+void mergeSortSort(vector&lt;int&gt; &amp;nums,int left, int right, vector&lt;int&gt; &amp;temp) {
+    if (left &lt; right) {
+        cout&lt;&lt;&quot;left: &quot;&lt;&lt;left&lt;&lt;&quot;  &quot;&lt;&lt;&quot;right: &quot;&lt;&lt;right&lt;&lt;endl;
+        cout&lt;&lt;&quot;left: &quot;&lt;&lt;left&lt;&lt;&quot;  &quot;&lt;&lt;&quot;right: &quot;&lt;&lt;right&lt;&lt;endl;
+        int mid = (left + right) / 2;
+        //分开
+        mergeSortSort(nums, left, mid, temp);
+        mergeSortSort(nums, mid + 1, right, temp);
+        //合并
+        mergeSortMerge(nums, left, mid, right, temp);
+    }
+}
+
+void mergeSortMerge(vector&lt;int&gt; &amp;nums,int left, int mid, int right, vector&lt;int&gt; &amp;temp) {
+    int i = left;
+    int j = mid + 1;
+    int t = 0;
+
+    //将两个vector里面较小的拿出来放进temp里
+    while (i &lt;= mid &amp;&amp; j &lt;= right)
+    {
+        if (nums[i] &lt;= nums[j])
+        {
+            temp[t++] = nums[i++];
+        }
+        else {
+            temp[t++] = nums[j++];
+        }
+        
+    }
+
+    while (i &lt;= mid) 
+    {
+        temp[t++] = nums[i++];
+    }
+
+    while (j &lt;= right)
+    {
+        temp[t++] = nums[j++];
+    }
+
+    t = 0;
+    while (left &lt;= right)
+    {
+        nums[left++] = temp[t++];
+    }
+}
+
+</code></pre>
+<h1 id="快速排序">快速排序</h1>
+<pre><code>//快速排序
+void quickSortSort(vector&lt;int&gt; &amp;nums, int left,int right);
+void quickSortSort2(vector&lt;int&gt; &amp;nums, int start, int end);
+
+void quickSort(vector&lt;int&gt; &amp;nums) {
+    quickSortSort(nums, 0, nums.size() - 1);
+}
+
+//https://wiki.jikexueyuan.com/project/easy-learn-algorithm/fast-sort.html
+void quickSortSort(vector&lt;int&gt; &amp;nums, int left,int right)
+{
+    if(left &gt; right)
+       return;
+
+    int temp = nums[left]; //temp中存的就是基准数
+    int i = left;
+    int j = right;
+
+    while(i != j)
+    {
+       //顺序很重要，要先从右边开始找
+        while(nums[j] &gt;= temp &amp;&amp; i &lt; j)
+            j--;
+       //再找右边的
+        while(nums[i] &lt;= temp &amp;&amp; i &lt; j)
+            i++;
+       //交换两个数在数组中的位置
+       if(i &lt; j)
+       {
+           swap(nums[i], nums[j]);
+       }
+    }
+    //最终将基准数归位
+    nums[left] = nums[i];
+    nums[i] = temp;
+
+    quickSortSort(nums, left, i-1);//继续处理左边的，这里是一个递归的过程
+    quickSortSort(nums, i+1, right);//继续处理右边的 ，这里是一个递归的过程
+}
+
+//写法2
+void quickSortSort2(vector&lt;int&gt; &amp;nums, int start, int end) {
+    if (start &gt;= end) {
+        return;
+    }
+
+    int left = start, right = end;
+
+    //选择锚点
+    int pivot = nums[(start + end) / 2];
+
+    while (left &lt;= right)
+    {
+        //从左向右找，找到一个大于锚点的数
+        while (left &lt;= right &amp;&amp; nums[left] &lt; pivot)
+        {
+            left++;
+        }
+
+        //从右向左找，找到一个小于锚点的数
+        while (left &lt;= right &amp;&amp; nums[right] &gt; pivot)
+        {
+            right--;
+        }
+
+        //交换
+        if (left &lt;= right) {
+            swap(nums[left],nums[right]);
+
+            left++;
+            right--;
+        }
+    }
+
+    quickSortSort2(nums, start, right);
+    quickSortSort2(nums, left, end);
+}
+</code></pre>
+<p>Notes:</p>
+<ol>
+<li>
+<p>希尔排序gap的选择：通常选择增量gap = 数组length / 2，缩小增量继续以gap = gap / 2的方式。</p>
+</li>
+<li>
+<p>快排的最坏情况的时间复杂度O（n^2）。<br>
+原因：</p>
+<ol>
+<li>在分解时每次选取的主元素为最小元素。</li>
+<li>在分解时每次选取的主元素为最大元素。</li>
+</ol>
+<p>如何改善：三值取中法，即取左端、中间、右端三个数，然后进行排序，将中间数作为锚点值。</p>
+</li>
+</ol>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[C++ 友元函数和友元类]]></title>
         <id>https://leilayz.github.io/post/c-you-yuan-han-shu-he-you-yuan-lei/</id>

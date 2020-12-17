@@ -2,24 +2,24 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Hello Gridea | 许愿</title>
+<title>爬虫——requests模块 | 许愿</title>
 <link rel="shortcut icon" href="https://leilayz.github.io/favicon.ico?v=1608190118696">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://leilayz.github.io/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="Hello Gridea | 许愿 - Atom Feed" href="https://leilayz.github.io/atom.xml">
+<link rel="alternate" type="application/atom+xml" title="爬虫——requests模块 | 许愿 - Atom Feed" href="https://leilayz.github.io/atom.xml">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
 
 
 
-    <meta name="description" content="👏  欢迎使用 Gridea ！
-✍️  Gridea 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...
+    <meta name="description" content="robots.txt协议：
+君子协议，规定了网站中哪些数据可以被爬虫爬取，哪些数据不可以被爬取。
+http协议：
 
-Github
-Gridea 主页
-示例网站
-特性👇
-📝  你可以使用最酷的 Markdo..." />
-    <meta name="keywords" content="Gridea" />
+概念： 服务器和客户端进行数据交互的一种形式。
+常用请求头信息
+User-Agent: 请求载体的身份标识。
+Connect..." />
+    <meta name="keywords" content="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
   </head>
@@ -81,63 +81,113 @@ Gridea 主页
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              Hello Gridea
+              爬虫——requests模块
             </h2>
             <div class="post-info">
               <span>
-                2018-12-11
+                2020-12-14
               </span>
               <span>
                 2 min read
               </span>
               
-                <a href="https://leilayz.github.io/tag/LfxnfFr2E/" class="post-tag">
-                  # Gridea
-                </a>
-              
             </div>
-            
-              <img class="post-feature-image" src="https://leilayz.github.io/post-images/hello-gridea.png" alt="">
             
             <div class="post-content-wrapper">
               <div class="post-content">
-                <p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
-<!-- more -->
-<p><a href="https://github.com/getgridea/gridea">Github</a><br>
-<a href="https://gridea.dev/">Gridea 主页</a><br>
-<a href="http://fehey.com/">示例网站</a></p>
-<h2 id="特性">特性👇</h2>
-<p>📝  你可以使用最酷的 <strong>Markdown</strong> 语法，进行快速创作</p>
-<p>🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片</p>
-<p>🏷️  你可以对文章进行标签分组</p>
-<p>📋  你可以自定义菜单，甚至可以创建外部链接菜单</p>
-<p>💻  你可以在 <strong>Windows</strong>，<strong>MacOS</strong> 或 <strong>Linux</strong> 设备上使用此客户端</p>
-<p>🌎  你可以使用 <strong>𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌</strong> 或 <strong>Coding Pages</strong> 向世界展示，未来将支持更多平台</p>
-<p>💬  你可以进行简单的配置，接入 <a href="https://github.com/gitalk/gitalk">Gitalk</a> 或 <a href="https://github.com/SukkaW/DisqusJS">DisqusJS</a> 评论系统</p>
-<p>🇬🇧  你可以使用<strong>中文简体</strong>或<strong>英语</strong></p>
-<p>🌁  你可以任意使用应用内默认主题或任意第三方主题，强大的主题自定义能力</p>
-<p>🖥  你可以自定义源文件夹，利用 OneDrive、百度网盘、iCloud、Dropbox 等进行多设备同步</p>
-<p>🌱 当然 <strong>Gridea</strong> 还很年轻，有很多不足，但请相信，它会不停向前 🏃</p>
-<p>未来，它一定会成为你离不开的伙伴</p>
-<p>尽情发挥你的才华吧！</p>
-<p>😘 Enjoy~</p>
+                <p>robots.txt协议：<br>
+君子协议，规定了网站中哪些数据可以被爬虫爬取，哪些数据不可以被爬取。</p>
+<p>http协议：</p>
+<ol>
+<li>概念： 服务器和客户端进行数据交互的一种形式。<br>
+常用请求头信息</li>
+<li>User-Agent: 请求载体的身份标识。</li>
+<li>Connection: 请求完毕后，是断开连接还是保持连接。<br>
+常用响应头信息</li>
+<li>Content-Type: 服务器响应回客户端的数据类型</li>
+</ol>
+<p>https协议：</p>
+<ol>
+<li>安全的超文本传输协议</li>
+</ol>
+<p>加密方式：</p>
+<ol>
+<li>对称密钥加密</li>
+<li>非对称密钥加密</li>
+<li>证书密钥加密</li>
+</ol>
+<p>使用模块：<br>
+urllib模块（过于古老）（×）<br>
+requests 模块 : Python中原生的一款基于网络请求的模块，功能强大，简单便捷，效率高。</p>
+<p>如何使用：</p>
+<ol>
+<li>指定URL</li>
+<li>发起请求</li>
+<li>获取响应数据</li>
+<li>持久化存储</li>
+</ol>
+<p>环境安装：<br>
+pip install requests</p>
+<p>实战编码：</p>
+<ol>
+<li>爬取搜狗首页</li>
+</ol>
+<p>巩固：</p>
+<ol>
+<li>简易网页采集器
+<ol>
+<li>UA检测</li>
+<li>UA伪装</li>
+</ol>
+</li>
+<li>百度翻译
+<ol>
+<li>post请求（携带了参数）</li>
+<li>响应数据是一组json数据</li>
+</ol>
+</li>
+<li>豆瓣电影：</li>
+<li>肯德基餐厅:</li>
+<li>国家药品进度管理总局化妆品生产许可证
+<ol>
+<li>动态加载数据</li>
+<li>首页中对应的企业信息数据是通过ajax动态请求到的</li>
+<li>同光对详情页url的观察发现：
+<ol>
+<li>url的域名都是一样的，只有携带的参数（id）不一样</li>
+<li>id值可以从首页对应的ajax数据中得到</li>
+<li>域名和id值组合成新的url访问详情数据</li>
+<li>详情页的数据也是ajax动态加载得到的。</li>
+<li>观察到所有post请求的url都是一样的，只有id值是不同的。如果可以批量获取多家企业的id后，就可以将id和url形成完整的AJAX请求</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<p>展望：<br>
+数据解析：<br>
+聚焦爬虫<br>
+1. 正则<br>
+2. bs4<br>
+3. xpath</p>
 
               </div>
               <div class="toc-container">
-                <ul class="markdownIt-TOC">
-<li>
-<ul>
-<li><a href="#%E7%89%B9%E6%80%A7">特性👇</a></li>
-</ul>
-</li>
-</ul>
-
+                
               </div>
             </div>
           </article>
         </div>
 
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://leilayz.github.io/post/pai-xu/">
+              <h3 class="post-title">
+                排序
+              </h3>
+            </a>
+          </div>
         
 
         
