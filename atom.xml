@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://leilayz.github.io</id>
     <title>许愿</title>
-    <updated>2020-12-17T07:29:04.414Z</updated>
+    <updated>2020-12-22T08:20:20.589Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://leilayz.github.io"/>
     <link rel="self" href="https://leilayz.github.io/atom.xml"/>
@@ -11,11 +11,132 @@
     <icon>https://leilayz.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 许愿</rights>
     <entry>
-        <title type="html"><![CDATA[爬虫——requests模块]]></title>
+        <title type="html"><![CDATA[爬虫（2）——数据解析]]></title>
+        <id>https://leilayz.github.io/post/pa-chong-shu-ju-jie-xi/</id>
+        <link href="https://leilayz.github.io/post/pa-chong-shu-ju-jie-xi/">
+        </link>
+        <updated>2020-12-14T23:21:07.000Z</updated>
+        <content type="html"><![CDATA[<p>聚焦爬虫：爬取页面中指定的页面内容</p>
+<ol>
+<li>编码流程
+<ol>
+<li>指定URL</li>
+<li>发起请求</li>
+<li>获取相应数据</li>
+<li>数据解析</li>
+<li>持久化存储</li>
+</ol>
+</li>
+</ol>
+<p>数据解析分类：<br>
+1. 正则<br>
+2. bs4<br>
+3. xpath(***)</p>
+<p>数据解析原理概述<br>
+解析的局部文本内容都会在标签之间或标签对应的属性中进行存储</p>
+<ol>
+<li>进行指定标签的定位</li>
+<li>标签或标签对应的属性中存储的数据值进行提取（解析）</li>
+</ol>
+<p>需求：</p>
+<ol>
+<li>爬取糗事百科图片</li>
+</ol>
+<div class="thumb">
+<a href="/article/123709847" target="_blank">
+<img src="//pic.qiushibaike.com/system/pictures/12370/123709847/medium/UPDVL4S97BIKJCSY.jpg" alt="糗事#123709847" class="illustration" width="100%" height="auto">
+</a>
+</div>
+<p>提取img src<br>
+ex = '<div class="thumb">.<em>?&lt;img src=&quot;(.</em>?)&quot; alt.*?</div>)&gt;'</p>
+<p>bs4进行数据解析：</p>
+<ol>
+<li>数据解析的原理：</li>
+<li>提取标签、标签属性中存储的数据值<br>
+bs4数据解析的原理：</li>
+<li>实例化一个BeatifulSoup对象，并且将页码源码数据加载到该对象中</li>
+<li>通过调用BeatifulSoup对象中相关的属性或者方法进行标签定位和数据提取<br>
+环境安装：</li>
+<li>pip install bs4</li>
+<li>pip install lxml<br>
+如何实例化BeautifulSoup对象</li>
+<li>from bs4 import BeautifulSoup</li>
+<li>对象的实例化
+<ol>
+<li>将本地的html文档中的数据加载到该对象中</li>
+</ol>
+<pre><code>#将本地的html文档中的数据加载到该对象中
+fp = open('./test.html','r',encoding='utf-8')
+BeautifulSoup(fp,'lxml') 
+</code></pre>
+<ol start="2">
+<li>将互联网上获取的页面源码加载到该对象中</li>
+</ol>
+<pre><code>page_text = response.text
+BeautifulSoup(fp,'lxml') 
+</code></pre>
+<ol start="3">
+<li>提供用于数据解析的方法和属性</li>
+<li>soup.tagName #soup.tagName 返回第一次出现的tagName对应的标签</li>
+<li>soup.find('tagName')  #返回第一次出现的tagName对应的标签</li>
+<li>soup.find('tagName, calss = 'song') # 属性定位</li>
+<li>soup.find_all('tagName') #返回所有符合要求的所有标签并返回一个列表</li>
+<li>soup.select('.tang') #某种选择器，返回的是一个列表</li>
+<li>soup.select('某一种选择器（id, calss, 标签选择器）')，返回的是一个列表</li>
+<li>soup.select('.tang &gt; ul &gt; li &gt; a') [0]: &gt; 表示的是一个层级</li>
+<li>soup.select('.tang &gt; ul &gt; li a')[0] : 空格表示的是多个层级</li>
+<li>获取标签之间的文本数据
+<ol>
+<li>soup.a.text/string/get_text()</li>
+<li>text/get_text()：可以获取某一个标签中所有的文本内容</li>
+<li>string：只可以获取直系的文本内容</li>
+</ol>
+</li>
+<li>获取标签中的属性值
+<ol>
+<li>soup.a['herf']</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<p>xpath解析：最常用且最便捷高效的一种解析方式。通用性。</p>
+<p>xpath解析原理：<br>
+1. 实例化一个etree的对象，且需要将被解析的页面源码数据加载到该对象中。<br>
+2. 调用etree对象中的xpath方法结合着xpath表达式实现标签的定位和内容的捕获。<br>
+环境的安装：<br>
+1. pip install lxml<br>
+如何实例化一个etree对象：from lxml import etree<br>
+1. 将本地的html文档中的源码数据加载到etree对象中：<br>
+etree.parse(filePath)<br>
+2. 将互联网上获取的源码数据加载到该对象中<br>
+etree.HTML('page_text')<br>
+xpath表达式：</p>
+<ol>
+<li>/：表示的是从根节点开始定位，表示一个层级</li>
+<li>//： 表示的是多个层级。可以表示从任意位置开始定位。</li>
+<li>属性定位：//div[@class=&quot;song&quot;] 通用格式：tag[@attrName=&quot;attrValue&quot;]</li>
+<li>索引定位：//div[@class=&quot;song&quot;]/p[3] 索引是从1开始的。</li>
+<li>取文本
+<ol>
+<li>/text() 返回的是一个标签直系文本内容，列表格式。</li>
+<li>//text() 返回的是标签下所有的文本。</li>
+</ol>
+</li>
+<li>取属性
+<ol>
+<li>/@attrName    ==&gt; img/@src</li>
+</ol>
+</li>
+</ol>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[爬虫（1）——requests模块]]></title>
         <id>https://leilayz.github.io/post/pa-chong-1/</id>
         <link href="https://leilayz.github.io/post/pa-chong-1/">
         </link>
-        <updated>2020-12-14T17:08:13.000Z</updated>
+        <updated>2020-12-14T03:08:13.000Z</updated>
         <content type="html"><![CDATA[<p>robots.txt协议：<br>
 君子协议，规定了网站中哪些数据可以被爬虫爬取，哪些数据不可以被爬取。</p>
 <p>http协议：</p>

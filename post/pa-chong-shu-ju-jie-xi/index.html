@@ -1,0 +1,294 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>爬虫（2）——数据解析 | 许愿</title>
+<link rel="shortcut icon" href="https://leilayz.github.io/favicon.ico?v=1608625217828">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://leilayz.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="爬虫（2）——数据解析 | 许愿 - Atom Feed" href="https://leilayz.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="聚焦爬虫：爬取页面中指定的页面内容
+
+编码流程
+
+指定URL
+发起请求
+获取相应数据
+数据解析
+持久化存储
+
+
+
+数据解析分类：
+1. 正则
+2. bs4
+3. xpath(***)
+数据解析原理概述
+解析的局部文本内容都会在标签之间或标签..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://leilayz.github.io">
+  <img class="avatar" src="https://leilayz.github.io/images/avatar.png?v=1608625217828" alt="">
+  </a>
+  <h1 class="site-title">
+    许愿
+  </h1>
+  <p class="site-description">
+    永远相信美好的事情即将发生。
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              爬虫（2）——数据解析
+            </h2>
+            <div class="post-info">
+              <span>
+                2020-12-14
+              </span>
+              <span>
+                4 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <p>聚焦爬虫：爬取页面中指定的页面内容</p>
+<ol>
+<li>编码流程
+<ol>
+<li>指定URL</li>
+<li>发起请求</li>
+<li>获取相应数据</li>
+<li>数据解析</li>
+<li>持久化存储</li>
+</ol>
+</li>
+</ol>
+<p>数据解析分类：<br>
+1. 正则<br>
+2. bs4<br>
+3. xpath(***)</p>
+<p>数据解析原理概述<br>
+解析的局部文本内容都会在标签之间或标签对应的属性中进行存储</p>
+<ol>
+<li>进行指定标签的定位</li>
+<li>标签或标签对应的属性中存储的数据值进行提取（解析）</li>
+</ol>
+<p>需求：</p>
+<ol>
+<li>爬取糗事百科图片</li>
+</ol>
+<div class="thumb">
+<a href="/article/123709847" target="_blank">
+<img src="//pic.qiushibaike.com/system/pictures/12370/123709847/medium/UPDVL4S97BIKJCSY.jpg" alt="糗事#123709847" class="illustration" width="100%" height="auto">
+</a>
+</div>
+<p>提取img src<br>
+ex = '<div class="thumb">.<em>?&lt;img src=&quot;(.</em>?)&quot; alt.*?</div>)&gt;'</p>
+<p>bs4进行数据解析：</p>
+<ol>
+<li>数据解析的原理：</li>
+<li>提取标签、标签属性中存储的数据值<br>
+bs4数据解析的原理：</li>
+<li>实例化一个BeatifulSoup对象，并且将页码源码数据加载到该对象中</li>
+<li>通过调用BeatifulSoup对象中相关的属性或者方法进行标签定位和数据提取<br>
+环境安装：</li>
+<li>pip install bs4</li>
+<li>pip install lxml<br>
+如何实例化BeautifulSoup对象</li>
+<li>from bs4 import BeautifulSoup</li>
+<li>对象的实例化
+<ol>
+<li>将本地的html文档中的数据加载到该对象中</li>
+</ol>
+<pre><code>#将本地的html文档中的数据加载到该对象中
+fp = open('./test.html','r',encoding='utf-8')
+BeautifulSoup(fp,'lxml') 
+</code></pre>
+<ol start="2">
+<li>将互联网上获取的页面源码加载到该对象中</li>
+</ol>
+<pre><code>page_text = response.text
+BeautifulSoup(fp,'lxml') 
+</code></pre>
+<ol start="3">
+<li>提供用于数据解析的方法和属性</li>
+<li>soup.tagName #soup.tagName 返回第一次出现的tagName对应的标签</li>
+<li>soup.find('tagName')  #返回第一次出现的tagName对应的标签</li>
+<li>soup.find('tagName, calss = 'song') # 属性定位</li>
+<li>soup.find_all('tagName') #返回所有符合要求的所有标签并返回一个列表</li>
+<li>soup.select('.tang') #某种选择器，返回的是一个列表</li>
+<li>soup.select('某一种选择器（id, calss, 标签选择器）')，返回的是一个列表</li>
+<li>soup.select('.tang &gt; ul &gt; li &gt; a') [0]: &gt; 表示的是一个层级</li>
+<li>soup.select('.tang &gt; ul &gt; li a')[0] : 空格表示的是多个层级</li>
+<li>获取标签之间的文本数据
+<ol>
+<li>soup.a.text/string/get_text()</li>
+<li>text/get_text()：可以获取某一个标签中所有的文本内容</li>
+<li>string：只可以获取直系的文本内容</li>
+</ol>
+</li>
+<li>获取标签中的属性值
+<ol>
+<li>soup.a['herf']</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<p>xpath解析：最常用且最便捷高效的一种解析方式。通用性。</p>
+<p>xpath解析原理：<br>
+1. 实例化一个etree的对象，且需要将被解析的页面源码数据加载到该对象中。<br>
+2. 调用etree对象中的xpath方法结合着xpath表达式实现标签的定位和内容的捕获。<br>
+环境的安装：<br>
+1. pip install lxml<br>
+如何实例化一个etree对象：from lxml import etree<br>
+1. 将本地的html文档中的源码数据加载到etree对象中：<br>
+etree.parse(filePath)<br>
+2. 将互联网上获取的源码数据加载到该对象中<br>
+etree.HTML('page_text')<br>
+xpath表达式：</p>
+<ol>
+<li>/：表示的是从根节点开始定位，表示一个层级</li>
+<li>//： 表示的是多个层级。可以表示从任意位置开始定位。</li>
+<li>属性定位：//div[@class=&quot;song&quot;] 通用格式：tag[@attrName=&quot;attrValue&quot;]</li>
+<li>索引定位：//div[@class=&quot;song&quot;]/p[3] 索引是从1开始的。</li>
+<li>取文本
+<ol>
+<li>/text() 返回的是一个标签直系文本内容，列表格式。</li>
+<li>//text() 返回的是标签下所有的文本。</li>
+</ol>
+</li>
+<li>取属性
+<ol>
+<li>/@attrName    ==&gt; img/@src</li>
+</ol>
+</li>
+</ol>
+
+              </div>
+              <div class="toc-container">
+                
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://leilayz.github.io/post/pa-chong-1/">
+              <h3 class="post-title">
+                爬虫（1）——requests模块
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://leilayz.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
