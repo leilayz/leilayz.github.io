@@ -2,24 +2,30 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Java 客户端服务器通信 | 许愿</title>
+<title>爬虫（3）——验证码识别 | 许愿</title>
 <link rel="shortcut icon" href="https://leilayz.github.io/favicon.ico?v=1608871613854">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://leilayz.github.io/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="Java 客户端服务器通信 | 许愿 - Atom Feed" href="https://leilayz.github.io/atom.xml">
+<link rel="alternate" type="application/atom+xml" title="爬虫（3）——验证码识别 | 许愿 - Atom Feed" href="https://leilayz.github.io/atom.xml">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
 
 
 
-    <meta name="description" content="代码
-客户端
-client.java
-import java.net.*;
-import java.io.*;
+    <meta name="description" content="验证码和爬虫之间的爱恨情仇
+反爬机制：验证码。识别验证码图片中的数据，用于模拟登录操作。
+识别验证码的操作：
 
-public class client {
-	public static void main(String[] args) t..." />
-    <meta name="keywords" content="Java,客户端,服务器" />
+人工肉眼识别
+第三方自动识别。
+
+云打码：平台被ban了
+超级鹰：
+
+注册：普通和开发者用户
+登录
+
+普通用户的登录：查询该用户..." />
+    <meta name="keywords" content="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
   </head>
@@ -81,107 +87,98 @@ public class client {
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              Java 客户端服务器通信
+              爬虫（3）——验证码识别
             </h2>
             <div class="post-info">
               <span>
-                2020-11-20
+                2020-12-19
               </span>
               <span>
                 2 min read
               </span>
               
-                <a href="https://leilayz.github.io/tag/iqgpYVGRC/" class="post-tag">
-                  # Java
-                </a>
-              
-                <a href="https://leilayz.github.io/tag/YiJ-Fit4Yn/" class="post-tag">
-                  # 客户端
-                </a>
-              
-                <a href="https://leilayz.github.io/tag/Q0ZhORR5Ew/" class="post-tag">
-                  # 服务器
-                </a>
-              
             </div>
             
             <div class="post-content-wrapper">
               <div class="post-content">
-                <h1 id="代码">代码</h1>
-<h2 id="客户端">客户端</h2>
-<p><strong>client.java</strong></p>
-<pre><code>import java.net.*;
-import java.io.*;
-
-public class client {
-	public static void main(String[] args) throws IOException {
-        //端口号可根据需要改变
-		Socket s = new Socket(&quot;localhost&quot;, 4999);
-
-		PrintWriter pr = new PrintWriter(s.getOutputStream());
-		pr.println(&quot;is it working?&quot;);
-		pr.flush();
-
-		InputStreamReader in = new InputStreamReader(s.getInputStream());
-		BufferedReader bf = new BufferedReader(in);
-
-		String str = bf.readLine();
-		System.out.println(&quot;server : &quot; + str);
-	}	
-}
-</code></pre>
-<h2 id="服务器">服务器</h2>
-<p><strong>server.java</strong></p>
-<pre><code>import java.net.*;
-import java.io.*;
-
-public class server {
-	public static void main(String[] args) throws IOException {
-        //端口号可根据需要改变
-		ServerSocket ss = new ServerSocket(4999);
-		Socket s = ss.accept();
-
-		System.out.println(&quot;Client connected&quot;);
-
-		InputStreamReader in = new InputStreamReader(s.getInputStream());
-		BufferedReader bf = new BufferedReader(in);
-
-		String str = bf.readLine();
-		System.out.println(&quot;Client : &quot; + str);
-
-		PrintWriter pr = new PrintWriter(s.getOutputStream());
-		pr.println(&quot;yes&quot;);
-		pr.flush();
-	}	
-}
-
-</code></pre>
-<h1 id="测试">测试</h1>
-<h3 id="1-运行服务器">1. 运行服务器</h3>
-<figure data-type="image" tabindex="1"><img src="https://leilayz.github.io/post-images/1606020926665.png" alt="" loading="lazy"></figure>
-<h3 id="2-运行客户端">2. 运行客户端</h3>
-<p><img src="https://leilayz.github.io/post-images/1606021247871.png" alt="" loading="lazy"><br>
-运行同时就会看到结果客户端的结果，同时服务器端的结果为：<br>
-<img src="https://leilayz.github.io/post-images/1606021334397.png" alt="" loading="lazy"></p>
+                <p>验证码和爬虫之间的爱恨情仇<br>
+反爬机制：验证码。识别验证码图片中的数据，用于模拟登录操作。</p>
+<p>识别验证码的操作：</p>
+<ol>
+<li>人工肉眼识别</li>
+<li>第三方自动识别。
+<ol>
+<li>云打码：平台被ban了</li>
+<li>超级鹰：
+<ol>
+<li>注册：普通和开发者用户</li>
+<li>登录
+<ol>
+<li>普通用户的登录：查询该用户时候还有剩余题分</li>
+<li>开发者用户登录：
+<ol>
+<li>创建一个软件：我的软件-&gt;添加新软件-&gt;录入软件名称-&gt;提交（软件id和密钥）</li>
+<li>下载示例代码：开发文档-&gt;下载示例代码语言</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>实战
+<ol>
+<li>识别古诗文网登陆页面中的验证码。</li>
+</ol>
+</li>
+<li>使用打码平台识别验证码的编码流程：
+<ol>
+<li>将验证码图片进行本地下载</li>
+<li>调用平台提供的示例代码进行图片数据识别</li>
+</ol>
+</li>
+</ol>
+<p>模拟登陆（古诗文网）：</p>
+<ol>
+<li>点击登录发起post请求</li>
+<li>post请求中会携带登陆之前录入的相关的登录信息（用户名，密码，验证码等）</li>
+<li>验证码特性：每次请求都会发生变化</li>
+</ol>
+<p>http/https协议特性：无状态。<br>
+没有请求到对应页面数据的原因：<br>
+发起的第二次基于个人主页页面请求的时候，服务器端并不知道该此请求是基于登录状态下的请求。</p>
+<p>cookie: 用来让服务器端记录客户端的相关状态。</p>
+<ol>
+<li>手动处理：通过抓包工具获取cookie值，并写入到headers内。</li>
+<li>自动处理：
+<ol>
+<li>cookie值来源是哪里？
+<ol>
+<li>模拟登陆post请求后，由服务器端创建</li>
+</ol>
+</li>
+<li>session会话对象：
+<ol>
+<li>作用：可以进行请求的发送。</li>
+<li>如果请求过程中产生了cookie，则该cookie会被自动存储/携带在该session对象中。</li>
+</ol>
+</li>
+<li>步骤
+<ol>
+<li>创建一个session对象： session = requests.Session()</li>
+<li>使用session对象进行模拟登陆post请求的发送（cookie就会被存储在session中）</li>
+<li>session对象对个人主页对一个的get请求进行发送（携带了cookie）<br>
+(未实现)</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
 
               </div>
               <div class="toc-container">
-                <ul class="markdownIt-TOC">
-<li><a href="#%E4%BB%A3%E7%A0%81">代码</a>
-<ul>
-<li><a href="#%E5%AE%A2%E6%88%B7%E7%AB%AF">客户端</a></li>
-<li><a href="#%E6%9C%8D%E5%8A%A1%E5%99%A8">服务器</a></li>
-</ul>
-</li>
-<li><a href="#%E6%B5%8B%E8%AF%95">测试</a><br>
-*
-<ul>
-<li><a href="#1-%E8%BF%90%E8%A1%8C%E6%9C%8D%E5%8A%A1%E5%99%A8">1. 运行服务器</a></li>
-<li><a href="#2-%E8%BF%90%E8%A1%8C%E5%AE%A2%E6%88%B7%E7%AB%AF">2. 运行客户端</a></li>
-</ul>
-</li>
-</ul>
-
+                
               </div>
             </div>
           </article>
@@ -190,9 +187,9 @@ public class server {
         
           <div class="next-post">
             <div class="next">下一篇</div>
-            <a href="https://leilayz.github.io/post/hello-world-bu-neng-sui-bian-gai-github-ming-zi/">
+            <a href="https://leilayz.github.io/post/pa-chong-shu-ju-jie-xi/">
               <h3 class="post-title">
-                Hello World (不能随便改github名字)
+                爬虫（2）——数据解析
               </h3>
             </a>
           </div>
