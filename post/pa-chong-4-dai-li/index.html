@@ -2,24 +2,27 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Java 客户端服务器通信 | 许愿</title>
+<title>爬虫（4）——代理与异步 | 许愿</title>
 <link rel="shortcut icon" href="https://leilayz.github.io/favicon.ico?v=1609309310723">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://leilayz.github.io/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="Java 客户端服务器通信 | 许愿 - Atom Feed" href="https://leilayz.github.io/atom.xml">
+<link rel="alternate" type="application/atom+xml" title="爬虫（4）——代理与异步 | 许愿 - Atom Feed" href="https://leilayz.github.io/atom.xml">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
 
 
 
-    <meta name="description" content="代码
-客户端
-client.java
-import java.net.*;
-import java.io.*;
-
-public class client {
-	public static void main(String[] args) t..." />
-    <meta name="keywords" content="Java,客户端,服务器" />
+    <meta name="description" content="代理：破解封ip这种反爬机制。
+什么是代理：
+1. 代理服务器。
+代理的作用：
+1.  突破自身ip访问的限制。
+2.  隐藏自身真实的ip。
+代理相关的网站：
+1. 快代理
+2. 西祠代理
+3. www.goubanjia.com
+代理i..." />
+    <meta name="keywords" content="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
   </head>
@@ -81,107 +84,73 @@ public class client {
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              Java 客户端服务器通信
+              爬虫（4）——代理与异步
             </h2>
             <div class="post-info">
               <span>
-                2020-11-20
+                2020-12-22
               </span>
               <span>
                 2 min read
               </span>
               
-                <a href="https://leilayz.github.io/tag/iqgpYVGRC/" class="post-tag">
-                  # Java
-                </a>
-              
-                <a href="https://leilayz.github.io/tag/YiJ-Fit4Yn/" class="post-tag">
-                  # 客户端
-                </a>
-              
-                <a href="https://leilayz.github.io/tag/Q0ZhORR5Ew/" class="post-tag">
-                  # 服务器
-                </a>
-              
             </div>
             
             <div class="post-content-wrapper">
               <div class="post-content">
-                <h1 id="代码">代码</h1>
-<h2 id="客户端">客户端</h2>
-<p><strong>client.java</strong></p>
-<pre><code>import java.net.*;
-import java.io.*;
-
-public class client {
-	public static void main(String[] args) throws IOException {
-        //端口号可根据需要改变
-		Socket s = new Socket(&quot;localhost&quot;, 4999);
-
-		PrintWriter pr = new PrintWriter(s.getOutputStream());
-		pr.println(&quot;is it working?&quot;);
-		pr.flush();
-
-		InputStreamReader in = new InputStreamReader(s.getInputStream());
-		BufferedReader bf = new BufferedReader(in);
-
-		String str = bf.readLine();
-		System.out.println(&quot;server : &quot; + str);
-	}	
-}
-</code></pre>
-<h2 id="服务器">服务器</h2>
-<p><strong>server.java</strong></p>
-<pre><code>import java.net.*;
-import java.io.*;
-
-public class server {
-	public static void main(String[] args) throws IOException {
-        //端口号可根据需要改变
-		ServerSocket ss = new ServerSocket(4999);
-		Socket s = ss.accept();
-
-		System.out.println(&quot;Client connected&quot;);
-
-		InputStreamReader in = new InputStreamReader(s.getInputStream());
-		BufferedReader bf = new BufferedReader(in);
-
-		String str = bf.readLine();
-		System.out.println(&quot;Client : &quot; + str);
-
-		PrintWriter pr = new PrintWriter(s.getOutputStream());
-		pr.println(&quot;yes&quot;);
-		pr.flush();
-	}	
-}
-
-</code></pre>
-<h1 id="测试">测试</h1>
-<h3 id="1-运行服务器">1. 运行服务器</h3>
-<figure data-type="image" tabindex="1"><img src="https://leilayz.github.io/post-images/1606020926665.png" alt="" loading="lazy"></figure>
-<h3 id="2-运行客户端">2. 运行客户端</h3>
-<p><img src="https://leilayz.github.io/post-images/1606021247871.png" alt="" loading="lazy"><br>
-运行同时就会看到结果客户端的结果，同时服务器端的结果为：<br>
-<img src="https://leilayz.github.io/post-images/1606021334397.png" alt="" loading="lazy"></p>
+                <p>代理：破解封ip这种反爬机制。</p>
+<p>什么是代理：<br>
+1. 代理服务器。<br>
+代理的作用：<br>
+1.  突破自身ip访问的限制。<br>
+2.  隐藏自身真实的ip。<br>
+代理相关的网站：<br>
+1. 快代理<br>
+2. 西祠代理<br>
+3. www.goubanjia.com</p>
+<p>代理ip的类型：<br>
+1. http：应用到http协议对应的url中<br>
+2. https: 应用到https协议对应的url中</p>
+<p>代理ip的匿名度：</p>
+<ol>
+<li>透明：服务器知道该次请求使用了代理，也知道该次请求的真实ip。</li>
+<li>匿名：知道使用了代理，不知道真实ip。</li>
+<li>高匿：服务器不知道使用了代理，不知道真实ip。</li>
+</ol>
+<p>高性能异步爬虫：<br>
+目的：在爬虫中使用异步实现高性能的数据爬取操作。</p>
+<p>异步爬虫的方式：</p>
+<ol>
+<li>多线程，多进程（不建议）</li>
+<li>线程池，进程池（适当使用）</li>
+</ol>
+<p>单线程+异步协程（推荐）<br>
+event_loop：事件循环，相当于一个无限循环，我们可以把一些函数注册到这个事件循环上，当满足某些条件的时候，函数就会被循环执行。<br>
+coroutine：协程对象，我们可以将协程对象注册到事件循环中，它会被事件循环调用。我们可以使用async关键字来定义一个方法，这个方法在调用时不会立即被执行，而是返回一个协程对象。</p>
+<p>task：任务，它是对协程对象的进一步封装，包含了任务的各个状态。<br>
+future: 代表将来执行或还没有执行的任务，实际上和task没有本质区别。<br>
+async 定义一个协程<br>
+await 用来挂起阻塞方法的执行</p>
+<p>aiohttp异步网络请求模块使用</p>
+<ol>
+<li>pip install aiohttp</li>
+<li>使用该模块中的ClientSession</li>
+<li>
+<ol>
+<li>text() 返回字符串形式的相应数据</li>
+<li>read() 返回的二进制形式的响应数据</li>
+<li>json() 返回的是json对象</li>
+</ol>
+</li>
+</ol>
+<p>流程：<br>
+<img src="https://leilayz.github.io/post-images/1609217437279.PNG" alt="" loading="lazy"></p>
+<p>如果想要附带参数：<br>
+<img src="https://leilayz.github.io/post-images/1609217559440.PNG" alt="" loading="lazy"></p>
 
               </div>
               <div class="toc-container">
-                <ul class="markdownIt-TOC">
-<li><a href="#%E4%BB%A3%E7%A0%81">代码</a>
-<ul>
-<li><a href="#%E5%AE%A2%E6%88%B7%E7%AB%AF">客户端</a></li>
-<li><a href="#%E6%9C%8D%E5%8A%A1%E5%99%A8">服务器</a></li>
-</ul>
-</li>
-<li><a href="#%E6%B5%8B%E8%AF%95">测试</a><br>
-*
-<ul>
-<li><a href="#1-%E8%BF%90%E8%A1%8C%E6%9C%8D%E5%8A%A1%E5%99%A8">1. 运行服务器</a></li>
-<li><a href="#2-%E8%BF%90%E8%A1%8C%E5%AE%A2%E6%88%B7%E7%AB%AF">2. 运行客户端</a></li>
-</ul>
-</li>
-</ul>
-
+                
               </div>
             </div>
           </article>
@@ -190,9 +159,9 @@ public class server {
         
           <div class="next-post">
             <div class="next">下一篇</div>
-            <a href="https://leilayz.github.io/post/hello-world-bu-neng-sui-bian-gai-github-ming-zi/">
+            <a href="https://leilayz.github.io/post/pa-chong-3-yan-zheng-ma-shi-bie/">
               <h3 class="post-title">
-                Hello World (不能随便改github名字)
+                爬虫（3）——验证码识别
               </h3>
             </a>
           </div>

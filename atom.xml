@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://leilayz.github.io</id>
     <title>许愿</title>
-    <updated>2020-12-25T04:47:05.333Z</updated>
+    <updated>2020-12-30T06:21:56.015Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://leilayz.github.io"/>
     <link rel="self" href="https://leilayz.github.io/atom.xml"/>
@@ -10,6 +10,272 @@
     <logo>https://leilayz.github.io/images/avatar.png</logo>
     <icon>https://leilayz.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 许愿</rights>
+    <entry>
+        <title type="html"><![CDATA[爬虫（6）—— scrapy框架]]></title>
+        <id>https://leilayz.github.io/post/pa-chong-6-scrapy-kuang-jia/</id>
+        <link href="https://leilayz.github.io/post/pa-chong-6-scrapy-kuang-jia/">
+        </link>
+        <updated>2020-12-27T12:46:17.000Z</updated>
+        <content type="html"><![CDATA[<p>什么是框架？<br>
+一个集成了很多功能并且具有很强通用性的一个项目模板。</p>
+<p>如何学习框架？<br>
+专门学习框架封装的各种功能的详细用法。</p>
+<p>什么是scrapy?<br>
+爬虫中封装好的一个明星框架。功能：高性能的持久化存储，异步的数据下载，高性能的数据解析，分布式。</p>
+<p>框架的基本使用：</p>
+<ol>
+<li>环境的安装：
+<ol>
+<li>mac or linux: pip install scrapy</li>
+<li>windows:</li>
+</ol>
+</li>
+</ol>
+<p>pip install wheel<br>
+下载twisted，下载地址为http://www.lfd.uci.edu/~gohlke/pythonlibs/#twisted<br>
+安装twisted：pip install Twisted‑17.1.0‑cp36‑cp36m‑win_amd64.whl<br>
+pip install pywin32<br>
+pip install scrapy<br>
+测试：在终端里录入scrapy指令，没有报错即表示安装成功！</p>
+<ol start="2">
+<li>创建一个工程：scrapy startproject xxxPro</li>
+<li>cd xxxPro</li>
+<li>在spiders子目录中创建一个爬虫文件
+<ol>
+<li>scrapy genspider spiderName www.xxx.com</li>
+</ol>
+</li>
+<li>执行工程：
+<ol>
+<li>scrapy crawl spiderName</li>
+</ol>
+</li>
+</ol>
+<p>scrapy数据解析：</p>
+<ol>
+<li>更改配置文件
+<ol>
+<li>USER_AGENT</li>
+<li>ROBOTSTXT_OBEY</li>
+<li>LOG_LEVEL</li>
+</ol>
+</li>
+</ol>
+<p>scrapy持久化存储</p>
+<ol>
+<li>基于终端指令：
+<ol>
+<li>要求：只可以将parse方法的返回值存储到本地的文本文件中</li>
+<li>注意：持久化存储对应的文本文件类型只可以为：'json', 'jsonlines', 'jl', 'csv', 'xml'</li>
+<li>指令：-o filepath</li>
+<li>简单高效便捷但局限性强</li>
+</ol>
+</li>
+<li>基于管道：
+<ol>
+<li>编码流程
+<ol>
+<li>数据解析</li>
+<li>在Item类中定义相关的属性</li>
+<li>将解析的数据封装存储到Item对象中</li>
+<li>将Item类型的对象提交给管道进行持久化存储</li>
+<li>在管道类的process_Item 函数要将其接收到的Item中存储的数据进行持久化存储操作</li>
+<li>在配置文件中开启管道</li>
+</ol>
+</li>
+<li>通用性强</li>
+</ol>
+</li>
+</ol>
+<p>mysql:</p>
+<ol>
+<li>使用临时密码登录进入mysql：mysql -u root -p  d*fQ)#B5rg_e</li>
+<li>更改密码为123</li>
+<li>以后登录数据库：mysql -u root -p    密码输入：123</li>
+<li>数据库操作见：https://www.runoob.com/mysql/mysql-create-database.html</li>
+<li>遇见Incorrect string value问题：
+<ol>
+<li>将configure file中改为character_set_server=utf8mb4</li>
+<li>将数据库字符集改为如下，将表以及所影响的列改为如下：</li>
+</ol>
+</li>
+</ol>
+<pre><code>mysql&gt; ALTER DATABASE MyDB CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci'
+
+mysql&gt; ALTER TABLE database.table MODIFY COLUMN column_name VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
+</code></pre>
+<pre><code>3. 创建新表时可直接设置：
+</code></pre>
+<pre><code>&gt; CREATE TABLE My_Table_Name (
+ twitter_id_str VARCHAR(255) NOT NULL UNIQUE,
+ twitter_screen_name VARCHAR(512) CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+ .....
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+</code></pre>
+<p>简答题：将爬取到的数据一份存储到本地，一份存储到数据库，如何实现？</p>
+<ol>
+<li>管道文件中的一个管道类对应的是将数据存储到一种平台。</li>
+<li>爬虫文件提交的item只会给管道文件中的第一个被执行的管道类接受。</li>
+<li>process_item中的return item表示将item传递给下一个即将被执行的管道类。</li>
+</ol>
+<p>基于Spider的全站数据爬取：</p>
+<ol>
+<li>将网站中某板块下的全部页码对应的页面数据进行爬取</li>
+<li>将网站中所有图片的名称（所有页码）</li>
+<li>实现方式
+<ol>
+<li>将所有页面的url添加到start_urls中。</li>
+<li>自行手动请求发送。
+<ol>
+<li>yield scrapy.Request(url, callback): callback专门用于数据解析</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<p>五大核心组件：<br>
+调度器<br>
+引擎<br>
+Spider<br>
+管道<br>
+下载器</p>
+<p>引擎(Scrapy)<br>
+用来处理整个系统的数据流处理, 触发事务(框架核心)<br>
+调度器(Scheduler)<br>
+用来接受引擎发过来的请求, 压入队列中, 并在引擎再次请求的时候返回. 可以想像成一个URL（抓取网页的网址或者说是链接）的优先队列, 由它来决定下一个要抓取的网址是什么, 同时去除重复的网址<br>
+下载器(Downloader)<br>
+用于下载网页内容, 并将网页内容返回给蜘蛛(Scrapy下载器是建立在twisted这个高效的异步模型上的)<br>
+爬虫(Spiders)<br>
+爬虫是主要干活的, 用于从特定的网页中提取自己需要的信息, 即所谓的实体(Item)。用户也可以从中提取出链接,让Scrapy继续抓取下一个页面<br>
+项目管道(Pipeline)<br>
+负责处理爬虫从网页中抽取的实体，主要的功能是持久化实体、验证实体的有效性、清除不需要的信息。当页面被爬虫解析后，将被发送到项目管道，并经过几个特定的次序处理数据。</p>
+<p>请求传参：</p>
+<ol>
+<li>使用场景：如果爬取解析的数据不在同一张页面中。（深度爬取）</li>
+<li>需求：爬取boss的岗位名称及描述</li>
+<li></li>
+</ol>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[爬虫(5) —— selenium]]></title>
+        <id>https://leilayz.github.io/post/pa-chong/</id>
+        <link href="https://leilayz.github.io/post/pa-chong/">
+        </link>
+        <updated>2020-12-27T10:52:59.000Z</updated>
+        <content type="html"><![CDATA[<p>selenium简介:</p>
+<ol>
+<li>基于浏览器自动化的一个模块</li>
+</ol>
+<p>作用：</p>
+<ol>
+<li>便捷的获取网站中动态加载数据</li>
+<li>便捷实现模拟登陆</li>
+</ol>
+<p>selenium使用流程：</p>
+<ol>
+<li>环境安装: pip install selenium</li>
+<li>下载浏览器驱动程序（谷歌浏览器）
+<ol>
+<li>下载路径:</li>
+<li>驱动程序和浏览器的映射关系</li>
+</ol>
+</li>
+<li>实例化一个浏览器对象</li>
+<li>编写基于浏览器自动化的操作代码
+<ol>
+<li>发起请求：get(url)</li>
+<li>标签定位：find系列方法</li>
+<li>标签交互：send_keys('xxx')</li>
+<li>执行js程序：excute_script('jsCode')</li>
+<li>前进，后退：back(), forward()</li>
+<li>关闭浏览器: quit()</li>
+</ol>
+</li>
+</ol>
+<p>selenium处理iframe：</p>
+<ol>
+<li>如果定位的标签存在于iframe标签之中，则必须使用swith_to.frame(id)</li>
+<li>动作链（拖动）: from selenium.webdriver import ActionChains
+<ol>
+<li>实例化动作链对象：action = ActionChains(bro)</li>
+<li>点击并长按：action.click_and_hold(div)</li>
+<li>移动：action.move_by_offset(17, 0)</li>
+<li>perform() 让动作链立即执行</li>
+<li>action.release()释放动作链对象</li>
+</ol>
+</li>
+</ol>
+<p>12306模拟登陆流程：</p>
+<ol>
+<li>使用selenium打开登陆页面</li>
+<li>对当前selenium打开的这张页面进行截图</li>
+<li>对当前图片局部区域（验证码图片）进行裁剪
+<ol>
+<li>好处：将验证码图片和模拟登陆进行一一对应</li>
+</ol>
+</li>
+<li>使用超级鹰识别验证码图片（坐标）</li>
+</ol>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[爬虫（4）——代理与异步]]></title>
+        <id>https://leilayz.github.io/post/pa-chong-4-dai-li/</id>
+        <link href="https://leilayz.github.io/post/pa-chong-4-dai-li/">
+        </link>
+        <updated>2020-12-22T20:44:39.000Z</updated>
+        <content type="html"><![CDATA[<p>代理：破解封ip这种反爬机制。</p>
+<p>什么是代理：<br>
+1. 代理服务器。<br>
+代理的作用：<br>
+1.  突破自身ip访问的限制。<br>
+2.  隐藏自身真实的ip。<br>
+代理相关的网站：<br>
+1. 快代理<br>
+2. 西祠代理<br>
+3. www.goubanjia.com</p>
+<p>代理ip的类型：<br>
+1. http：应用到http协议对应的url中<br>
+2. https: 应用到https协议对应的url中</p>
+<p>代理ip的匿名度：</p>
+<ol>
+<li>透明：服务器知道该次请求使用了代理，也知道该次请求的真实ip。</li>
+<li>匿名：知道使用了代理，不知道真实ip。</li>
+<li>高匿：服务器不知道使用了代理，不知道真实ip。</li>
+</ol>
+<p>高性能异步爬虫：<br>
+目的：在爬虫中使用异步实现高性能的数据爬取操作。</p>
+<p>异步爬虫的方式：</p>
+<ol>
+<li>多线程，多进程（不建议）</li>
+<li>线程池，进程池（适当使用）</li>
+</ol>
+<p>单线程+异步协程（推荐）<br>
+event_loop：事件循环，相当于一个无限循环，我们可以把一些函数注册到这个事件循环上，当满足某些条件的时候，函数就会被循环执行。<br>
+coroutine：协程对象，我们可以将协程对象注册到事件循环中，它会被事件循环调用。我们可以使用async关键字来定义一个方法，这个方法在调用时不会立即被执行，而是返回一个协程对象。</p>
+<p>task：任务，它是对协程对象的进一步封装，包含了任务的各个状态。<br>
+future: 代表将来执行或还没有执行的任务，实际上和task没有本质区别。<br>
+async 定义一个协程<br>
+await 用来挂起阻塞方法的执行</p>
+<p>aiohttp异步网络请求模块使用</p>
+<ol>
+<li>pip install aiohttp</li>
+<li>使用该模块中的ClientSession</li>
+<li>
+<ol>
+<li>text() 返回字符串形式的相应数据</li>
+<li>read() 返回的二进制形式的响应数据</li>
+<li>json() 返回的是json对象</li>
+</ol>
+</li>
+</ol>
+<p>流程：<br>
+<img src="https://leilayz.github.io/post-images/1609217437279.PNG" alt="" loading="lazy"></p>
+<p>如果想要附带参数：<br>
+<img src="https://leilayz.github.io/post-images/1609217559440.PNG" alt="" loading="lazy"></p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[爬虫（3）——验证码识别]]></title>
         <id>https://leilayz.github.io/post/pa-chong-3-yan-zheng-ma-shi-bie/</id>
@@ -774,38 +1040,6 @@ public class server {
         </link>
         <updated>2020-11-16T00:55:39.000Z</updated>
         <content type="html"><![CDATA[<p>第一次安装Gridea, 其中我改了一次github的名字，发现很多东西都用不了，网页URL生成路径是错误的。解决方案是删除所有Gridea相关文件，重装Gridea，删除github账号，重新创建repository，生成Token才能正常工作。仅以此提醒各位，不要随便改github名字。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Hello Gridea]]></title>
-        <id>https://leilayz.github.io/post/hello-gridea/</id>
-        <link href="https://leilayz.github.io/post/hello-gridea/">
-        </link>
-        <updated>2018-12-11T16:00:00.000Z</updated>
-        <summary type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
-<!-- more -->
-<p><a href="https://github.com/getgridea/gridea">Github</a><br>
-<a href="https://gridea.dev/">Gridea 主页</a><br>
-<a href="http://fehey.com/">示例网站</a></p>
-<h2 id="特性">特性👇</h2>
-<p>📝  你可以使用最酷的 <strong>Markdown</strong> 语法，进行快速创作</p>
-<p>🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片</p>
-<p>🏷️  你可以对文章进行标签分组</p>
-<p>📋  你可以自定义菜单，甚至可以创建外部链接菜单</p>
-<p>💻  你可以在 <strong>Windows</strong>，<strong>MacOS</strong> 或 <strong>Linux</strong> 设备上使用此客户端</p>
-<p>🌎  你可以使用 <strong>𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌</strong> 或 <strong>Coding Pages</strong> 向世界展示，未来将支持更多平台</p>
-<p>💬  你可以进行简单的配置，接入 <a href="https://github.com/gitalk/gitalk">Gitalk</a> 或 <a href="https://github.com/SukkaW/DisqusJS">DisqusJS</a> 评论系统</p>
-<p>🇬🇧  你可以使用<strong>中文简体</strong>或<strong>英语</strong></p>
-<p>🌁  你可以任意使用应用内默认主题或任意第三方主题，强大的主题自定义能力</p>
-<p>🖥  你可以自定义源文件夹，利用 OneDrive、百度网盘、iCloud、Dropbox 等进行多设备同步</p>
-<p>🌱 当然 <strong>Gridea</strong> 还很年轻，有很多不足，但请相信，它会不停向前 🏃</p>
-<p>未来，它一定会成为你离不开的伙伴</p>
-<p>尽情发挥你的才华吧！</p>
-<p>😘 Enjoy~</p>
 ]]></content>
     </entry>
 </feed>

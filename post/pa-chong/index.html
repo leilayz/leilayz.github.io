@@ -2,24 +2,31 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Java 客户端服务器通信 | 许愿</title>
+<title>爬虫(5) —— selenium | 许愿</title>
 <link rel="shortcut icon" href="https://leilayz.github.io/favicon.ico?v=1609309310723">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://leilayz.github.io/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="Java 客户端服务器通信 | 许愿 - Atom Feed" href="https://leilayz.github.io/atom.xml">
+<link rel="alternate" type="application/atom+xml" title="爬虫(5) —— selenium | 许愿 - Atom Feed" href="https://leilayz.github.io/atom.xml">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
 
 
 
-    <meta name="description" content="代码
-客户端
-client.java
-import java.net.*;
-import java.io.*;
+    <meta name="description" content="selenium简介:
 
-public class client {
-	public static void main(String[] args) t..." />
-    <meta name="keywords" content="Java,客户端,服务器" />
+基于浏览器自动化的一个模块
+
+作用：
+
+便捷的获取网站中动态加载数据
+便捷实现模拟登陆
+
+selenium使用流程：
+
+环境安装: pip install selenium
+下载浏览器驱动程序（谷歌浏览器）
+
+下载..." />
+    <meta name="keywords" content="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
   </head>
@@ -81,107 +88,78 @@ public class client {
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              Java 客户端服务器通信
+              爬虫(5) —— selenium
             </h2>
             <div class="post-info">
               <span>
-                2020-11-20
+                2020-12-27
               </span>
               <span>
                 2 min read
               </span>
               
-                <a href="https://leilayz.github.io/tag/iqgpYVGRC/" class="post-tag">
-                  # Java
-                </a>
-              
-                <a href="https://leilayz.github.io/tag/YiJ-Fit4Yn/" class="post-tag">
-                  # 客户端
-                </a>
-              
-                <a href="https://leilayz.github.io/tag/Q0ZhORR5Ew/" class="post-tag">
-                  # 服务器
-                </a>
-              
             </div>
             
             <div class="post-content-wrapper">
               <div class="post-content">
-                <h1 id="代码">代码</h1>
-<h2 id="客户端">客户端</h2>
-<p><strong>client.java</strong></p>
-<pre><code>import java.net.*;
-import java.io.*;
-
-public class client {
-	public static void main(String[] args) throws IOException {
-        //端口号可根据需要改变
-		Socket s = new Socket(&quot;localhost&quot;, 4999);
-
-		PrintWriter pr = new PrintWriter(s.getOutputStream());
-		pr.println(&quot;is it working?&quot;);
-		pr.flush();
-
-		InputStreamReader in = new InputStreamReader(s.getInputStream());
-		BufferedReader bf = new BufferedReader(in);
-
-		String str = bf.readLine();
-		System.out.println(&quot;server : &quot; + str);
-	}	
-}
-</code></pre>
-<h2 id="服务器">服务器</h2>
-<p><strong>server.java</strong></p>
-<pre><code>import java.net.*;
-import java.io.*;
-
-public class server {
-	public static void main(String[] args) throws IOException {
-        //端口号可根据需要改变
-		ServerSocket ss = new ServerSocket(4999);
-		Socket s = ss.accept();
-
-		System.out.println(&quot;Client connected&quot;);
-
-		InputStreamReader in = new InputStreamReader(s.getInputStream());
-		BufferedReader bf = new BufferedReader(in);
-
-		String str = bf.readLine();
-		System.out.println(&quot;Client : &quot; + str);
-
-		PrintWriter pr = new PrintWriter(s.getOutputStream());
-		pr.println(&quot;yes&quot;);
-		pr.flush();
-	}	
-}
-
-</code></pre>
-<h1 id="测试">测试</h1>
-<h3 id="1-运行服务器">1. 运行服务器</h3>
-<figure data-type="image" tabindex="1"><img src="https://leilayz.github.io/post-images/1606020926665.png" alt="" loading="lazy"></figure>
-<h3 id="2-运行客户端">2. 运行客户端</h3>
-<p><img src="https://leilayz.github.io/post-images/1606021247871.png" alt="" loading="lazy"><br>
-运行同时就会看到结果客户端的结果，同时服务器端的结果为：<br>
-<img src="https://leilayz.github.io/post-images/1606021334397.png" alt="" loading="lazy"></p>
+                <p>selenium简介:</p>
+<ol>
+<li>基于浏览器自动化的一个模块</li>
+</ol>
+<p>作用：</p>
+<ol>
+<li>便捷的获取网站中动态加载数据</li>
+<li>便捷实现模拟登陆</li>
+</ol>
+<p>selenium使用流程：</p>
+<ol>
+<li>环境安装: pip install selenium</li>
+<li>下载浏览器驱动程序（谷歌浏览器）
+<ol>
+<li>下载路径:</li>
+<li>驱动程序和浏览器的映射关系</li>
+</ol>
+</li>
+<li>实例化一个浏览器对象</li>
+<li>编写基于浏览器自动化的操作代码
+<ol>
+<li>发起请求：get(url)</li>
+<li>标签定位：find系列方法</li>
+<li>标签交互：send_keys('xxx')</li>
+<li>执行js程序：excute_script('jsCode')</li>
+<li>前进，后退：back(), forward()</li>
+<li>关闭浏览器: quit()</li>
+</ol>
+</li>
+</ol>
+<p>selenium处理iframe：</p>
+<ol>
+<li>如果定位的标签存在于iframe标签之中，则必须使用swith_to.frame(id)</li>
+<li>动作链（拖动）: from selenium.webdriver import ActionChains
+<ol>
+<li>实例化动作链对象：action = ActionChains(bro)</li>
+<li>点击并长按：action.click_and_hold(div)</li>
+<li>移动：action.move_by_offset(17, 0)</li>
+<li>perform() 让动作链立即执行</li>
+<li>action.release()释放动作链对象</li>
+</ol>
+</li>
+</ol>
+<p>12306模拟登陆流程：</p>
+<ol>
+<li>使用selenium打开登陆页面</li>
+<li>对当前selenium打开的这张页面进行截图</li>
+<li>对当前图片局部区域（验证码图片）进行裁剪
+<ol>
+<li>好处：将验证码图片和模拟登陆进行一一对应</li>
+</ol>
+</li>
+<li>使用超级鹰识别验证码图片（坐标）</li>
+</ol>
 
               </div>
               <div class="toc-container">
-                <ul class="markdownIt-TOC">
-<li><a href="#%E4%BB%A3%E7%A0%81">代码</a>
-<ul>
-<li><a href="#%E5%AE%A2%E6%88%B7%E7%AB%AF">客户端</a></li>
-<li><a href="#%E6%9C%8D%E5%8A%A1%E5%99%A8">服务器</a></li>
-</ul>
-</li>
-<li><a href="#%E6%B5%8B%E8%AF%95">测试</a><br>
-*
-<ul>
-<li><a href="#1-%E8%BF%90%E8%A1%8C%E6%9C%8D%E5%8A%A1%E5%99%A8">1. 运行服务器</a></li>
-<li><a href="#2-%E8%BF%90%E8%A1%8C%E5%AE%A2%E6%88%B7%E7%AB%AF">2. 运行客户端</a></li>
-</ul>
-</li>
-</ul>
-
+                
               </div>
             </div>
           </article>
@@ -190,9 +168,9 @@ public class server {
         
           <div class="next-post">
             <div class="next">下一篇</div>
-            <a href="https://leilayz.github.io/post/hello-world-bu-neng-sui-bian-gai-github-ming-zi/">
+            <a href="https://leilayz.github.io/post/pa-chong-4-dai-li/">
               <h3 class="post-title">
-                Hello World (不能随便改github名字)
+                爬虫（4）——代理与异步
               </h3>
             </a>
           </div>
