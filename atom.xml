@@ -2,20 +2,82 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://leilayz.github.io</id>
     <title>许愿</title>
-    <updated>2020-12-30T06:21:56.015Z</updated>
+    <updated>2021-01-01T06:09:45.540Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://leilayz.github.io"/>
     <link rel="self" href="https://leilayz.github.io/atom.xml"/>
     <subtitle>永远相信美好的事情即将发生。</subtitle>
     <logo>https://leilayz.github.io/images/avatar.png</logo>
     <icon>https://leilayz.github.io/favicon.ico</icon>
-    <rights>All rights reserved 2020, 许愿</rights>
+    <rights>All rights reserved 2021, 许愿</rights>
+    <entry>
+        <title type="html"><![CDATA[爬虫(5) —— selenium]]></title>
+        <id>https://leilayz.github.io/post/pa-chong/</id>
+        <link href="https://leilayz.github.io/post/pa-chong/">
+        </link>
+        <updated>2020-12-27T10:52:59.000Z</updated>
+        <content type="html"><![CDATA[<p>selenium简介:</p>
+<ol>
+<li>基于浏览器自动化的一个模块</li>
+</ol>
+<p>作用：</p>
+<ol>
+<li>便捷的获取网站中动态加载数据</li>
+<li>便捷实现模拟登陆</li>
+</ol>
+<p>selenium使用流程：</p>
+<ol>
+<li>环境安装: pip install selenium</li>
+<li>下载浏览器驱动程序（谷歌浏览器）
+<ol>
+<li>下载路径:</li>
+<li>驱动程序和浏览器的映射关系</li>
+</ol>
+</li>
+<li>实例化一个浏览器对象</li>
+<li>编写基于浏览器自动化的操作代码
+<ol>
+<li>发起请求：get(url)</li>
+<li>标签定位：find系列方法</li>
+<li>标签交互：send_keys('xxx')</li>
+<li>执行js程序：excute_script('jsCode')</li>
+<li>前进，后退：back(), forward()</li>
+<li>关闭浏览器: quit()</li>
+</ol>
+</li>
+</ol>
+<p>selenium处理iframe：</p>
+<ol>
+<li>如果定位的标签存在于iframe标签之中，则必须使用swith_to.frame(id)</li>
+<li>动作链（拖动）: from selenium.webdriver import ActionChains
+<ol>
+<li>实例化动作链对象：action = ActionChains(bro)</li>
+<li>点击并长按：action.click_and_hold(div)</li>
+<li>移动：action.move_by_offset(17, 0)</li>
+<li>perform() 让动作链立即执行</li>
+<li>action.release()释放动作链对象</li>
+</ol>
+</li>
+</ol>
+<p>12306模拟登陆流程：</p>
+<ol>
+<li>使用selenium打开登陆页面</li>
+<li>对当前selenium打开的这张页面进行截图</li>
+<li>对当前图片局部区域（验证码图片）进行裁剪
+<ol>
+<li>好处：将验证码图片和模拟登陆进行一一对应</li>
+</ol>
+</li>
+<li>使用超级鹰识别验证码图片（坐标）</li>
+</ol>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[爬虫（6）—— scrapy框架]]></title>
-        <id>https://leilayz.github.io/post/pa-chong-6-scrapy-kuang-jia/</id>
-        <link href="https://leilayz.github.io/post/pa-chong-6-scrapy-kuang-jia/">
+        <id>https://leilayz.github.io/post/pa-chongs-6-scrapy-kuang-jia/</id>
+        <link href="https://leilayz.github.io/post/pa-chongs-6-scrapy-kuang-jia/">
         </link>
-        <updated>2020-12-27T12:46:17.000Z</updated>
+        <updated>2020-12-26T22:46:17.000Z</updated>
         <content type="html"><![CDATA[<p>什么是框架？<br>
 一个集成了很多功能并且具有很强通用性的一个项目模板。</p>
 <p>如何学习框架？<br>
@@ -152,70 +214,262 @@ Spider<br>
 <p>请求传参：</p>
 <ol>
 <li>使用场景：如果爬取解析的数据不在同一张页面中。（深度爬取）</li>
-<li>需求：爬取boss的岗位名称及描述</li>
-<li></li>
+<li>需求：爬取boss的岗位名称，岗位描述（未完成）</li>
+</ol>
+<p>图片数据爬取之ImagePipeline</p>
+<ol>
+<li>基于scrapy爬取字符串类型的数据和爬取图片类型的数据的区别？
+<ol>
+<li>字符串：只需要基于xpath进行解析且提交管道进行持久化存储</li>
+<li>图片：xpath解析出图片src的属性值。需要单独对图片地址发起请求获取图片二进制类型的数据。</li>
+<li>ImagesPipeline:
+<ol>
+<li>只需要将img的src属性值进行解析，提交到管道，管道就会对图片的src进行请求发送获取图片的二进制类型的数据，并且进行存储</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>使用流程
+<ol>
+<li>需求：爬取站长素材中的高清图片</li>
+<li>步骤：
+<ol>
+<li>数据解析（图片地址）</li>
+<li>将存储图片地址的item提交到制定的管道类</li>
+<li>在管道文件中自定制一个基于ImagesPipeLine的一个管道类
+<ol>
+<li>get_media_request</li>
+<li>file_path</li>
+<li>item_completed</li>
+</ol>
+</li>
+<li>在配置文件中
+<ol>
+<li>指定图片存储的目录：IMAGES_STORE = './imgs_bobo'</li>
+<li>指定开启的管道：自定制的管道类</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>中间件：
+<ol>
+<li>下载中间件
+<ol>
+<li>位置：引擎和下载器之间</li>
+<li>作用：批量拦截到整个工程中所有的请求和响应</li>
+<li>拦截请求：
+<ol>
+<li>UA伪装</li>
+</ol>
+</li>
+<li>拦截响应：</li>
+</ol>
+</li>
+</ol>
+</li>
 </ol>
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[爬虫(5) —— selenium]]></title>
-        <id>https://leilayz.github.io/post/pa-chong/</id>
-        <link href="https://leilayz.github.io/post/pa-chong/">
+        <title type="html"><![CDATA[爬虫（6）—— scrapy框架]]></title>
+        <id>https://leilayz.github.io/post/pa-chongss-6-scrapy-kuang-jia/</id>
+        <link href="https://leilayz.github.io/post/pa-chongss-6-scrapy-kuang-jia/">
         </link>
-        <updated>2020-12-27T10:52:59.000Z</updated>
-        <content type="html"><![CDATA[<p>selenium简介:</p>
+        <updated>2020-12-26T22:46:17.000Z</updated>
+        <content type="html"><![CDATA[<p>什么是框架？<br>
+一个集成了很多功能并且具有很强通用性的一个项目模板。</p>
+<p>如何学习框架？<br>
+专门学习框架封装的各种功能的详细用法。</p>
+<p>什么是scrapy?<br>
+爬虫中封装好的一个明星框架。功能：高性能的持久化存储，异步的数据下载，高性能的数据解析，分布式。</p>
+<p>框架的基本使用：</p>
 <ol>
-<li>基于浏览器自动化的一个模块</li>
-</ol>
-<p>作用：</p>
+<li>环境的安装：
 <ol>
-<li>便捷的获取网站中动态加载数据</li>
-<li>便捷实现模拟登陆</li>
-</ol>
-<p>selenium使用流程：</p>
-<ol>
-<li>环境安装: pip install selenium</li>
-<li>下载浏览器驱动程序（谷歌浏览器）
-<ol>
-<li>下载路径:</li>
-<li>驱动程序和浏览器的映射关系</li>
-</ol>
-</li>
-<li>实例化一个浏览器对象</li>
-<li>编写基于浏览器自动化的操作代码
-<ol>
-<li>发起请求：get(url)</li>
-<li>标签定位：find系列方法</li>
-<li>标签交互：send_keys('xxx')</li>
-<li>执行js程序：excute_script('jsCode')</li>
-<li>前进，后退：back(), forward()</li>
-<li>关闭浏览器: quit()</li>
+<li>mac or linux: pip install scrapy</li>
+<li>windows:</li>
 </ol>
 </li>
 </ol>
-<p>selenium处理iframe：</p>
+<p>pip install wheel<br>
+下载twisted，下载地址为http://www.lfd.uci.edu/~gohlke/pythonlibs/#twisted<br>
+安装twisted：pip install Twisted‑17.1.0‑cp36‑cp36m‑win_amd64.whl<br>
+pip install pywin32<br>
+pip install scrapy<br>
+测试：在终端里录入scrapy指令，没有报错即表示安装成功！</p>
+<ol start="2">
+<li>创建一个工程：scrapy startproject xxxPro</li>
+<li>cd xxxPro</li>
+<li>在spiders子目录中创建一个爬虫文件
 <ol>
-<li>如果定位的标签存在于iframe标签之中，则必须使用swith_to.frame(id)</li>
-<li>动作链（拖动）: from selenium.webdriver import ActionChains
+<li>scrapy genspider spiderName www.xxx.com</li>
+</ol>
+</li>
+<li>执行工程：
 <ol>
-<li>实例化动作链对象：action = ActionChains(bro)</li>
-<li>点击并长按：action.click_and_hold(div)</li>
-<li>移动：action.move_by_offset(17, 0)</li>
-<li>perform() 让动作链立即执行</li>
-<li>action.release()释放动作链对象</li>
+<li>scrapy crawl spiderName</li>
 </ol>
 </li>
 </ol>
-<p>12306模拟登陆流程：</p>
+<p>scrapy数据解析：</p>
 <ol>
-<li>使用selenium打开登陆页面</li>
-<li>对当前selenium打开的这张页面进行截图</li>
-<li>对当前图片局部区域（验证码图片）进行裁剪
+<li>更改配置文件
 <ol>
-<li>好处：将验证码图片和模拟登陆进行一一对应</li>
+<li>USER_AGENT</li>
+<li>ROBOTSTXT_OBEY</li>
+<li>LOG_LEVEL</li>
 </ol>
 </li>
-<li>使用超级鹰识别验证码图片（坐标）</li>
+</ol>
+<p>scrapy持久化存储</p>
+<ol>
+<li>基于终端指令：
+<ol>
+<li>要求：只可以将parse方法的返回值存储到本地的文本文件中</li>
+<li>注意：持久化存储对应的文本文件类型只可以为：'json', 'jsonlines', 'jl', 'csv', 'xml'</li>
+<li>指令：-o filepath</li>
+<li>简单高效便捷但局限性强</li>
+</ol>
+</li>
+<li>基于管道：
+<ol>
+<li>编码流程
+<ol>
+<li>数据解析</li>
+<li>在Item类中定义相关的属性</li>
+<li>将解析的数据封装存储到Item对象中</li>
+<li>将Item类型的对象提交给管道进行持久化存储</li>
+<li>在管道类的process_Item 函数要将其接收到的Item中存储的数据进行持久化存储操作</li>
+<li>在配置文件中开启管道</li>
+</ol>
+</li>
+<li>通用性强</li>
+</ol>
+</li>
+</ol>
+<p>mysql:</p>
+<ol>
+<li>使用临时密码登录进入mysql：mysql -u root -p  d*fQ)#B5rg_e</li>
+<li>更改密码为123</li>
+<li>以后登录数据库：mysql -u root -p    密码输入：123</li>
+<li>数据库操作见：https://www.runoob.com/mysql/mysql-create-database.html</li>
+<li>遇见Incorrect string value问题：
+<ol>
+<li>将configure file中改为character_set_server=utf8mb4</li>
+<li>将数据库字符集改为如下，将表以及所影响的列改为如下：</li>
+</ol>
+</li>
+</ol>
+<pre><code>mysql&gt; ALTER DATABASE MyDB CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci'
+
+mysql&gt; ALTER TABLE database.table MODIFY COLUMN column_name VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
+</code></pre>
+<pre><code>3. 创建新表时可直接设置：
+</code></pre>
+<pre><code>&gt; CREATE TABLE My_Table_Name (
+ twitter_id_str VARCHAR(255) NOT NULL UNIQUE,
+ twitter_screen_name VARCHAR(512) CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+ .....
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+</code></pre>
+<p>简答题：将爬取到的数据一份存储到本地，一份存储到数据库，如何实现？</p>
+<ol>
+<li>管道文件中的一个管道类对应的是将数据存储到一种平台。</li>
+<li>爬虫文件提交的item只会给管道文件中的第一个被执行的管道类接受。</li>
+<li>process_item中的return item表示将item传递给下一个即将被执行的管道类。</li>
+</ol>
+<p>基于Spider的全站数据爬取：</p>
+<ol>
+<li>将网站中某板块下的全部页码对应的页面数据进行爬取</li>
+<li>将网站中所有图片的名称（所有页码）</li>
+<li>实现方式
+<ol>
+<li>将所有页面的url添加到start_urls中。</li>
+<li>自行手动请求发送。
+<ol>
+<li>yield scrapy.Request(url, callback): callback专门用于数据解析</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<p>五大核心组件：<br>
+调度器<br>
+引擎<br>
+Spider<br>
+管道<br>
+下载器</p>
+<p>引擎(Scrapy)<br>
+用来处理整个系统的数据流处理, 触发事务(框架核心)<br>
+调度器(Scheduler)<br>
+用来接受引擎发过来的请求, 压入队列中, 并在引擎再次请求的时候返回. 可以想像成一个URL（抓取网页的网址或者说是链接）的优先队列, 由它来决定下一个要抓取的网址是什么, 同时去除重复的网址<br>
+下载器(Downloader)<br>
+用于下载网页内容, 并将网页内容返回给蜘蛛(Scrapy下载器是建立在twisted这个高效的异步模型上的)<br>
+爬虫(Spiders)<br>
+爬虫是主要干活的, 用于从特定的网页中提取自己需要的信息, 即所谓的实体(Item)。用户也可以从中提取出链接,让Scrapy继续抓取下一个页面<br>
+项目管道(Pipeline)<br>
+负责处理爬虫从网页中抽取的实体，主要的功能是持久化实体、验证实体的有效性、清除不需要的信息。当页面被爬虫解析后，将被发送到项目管道，并经过几个特定的次序处理数据。</p>
+<p>请求传参：</p>
+<ol>
+<li>使用场景：如果爬取解析的数据不在同一张页面中。（深度爬取）</li>
+<li>需求：爬取boss的岗位名称，岗位描述（未完成）</li>
+</ol>
+<p>图片数据爬取之ImagePipeline</p>
+<ol>
+<li>基于scrapy爬取字符串类型的数据和爬取图片类型的数据的区别？
+<ol>
+<li>字符串：只需要基于xpath进行解析且提交管道进行持久化存储</li>
+<li>图片：xpath解析出图片src的属性值。需要单独对图片地址发起请求获取图片二进制类型的数据。</li>
+<li>ImagesPipeline:
+<ol>
+<li>只需要将img的src属性值进行解析，提交到管道，管道就会对图片的src进行请求发送获取图片的二进制类型的数据，并且进行存储</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>使用流程
+<ol>
+<li>需求：爬取站长素材中的高清图片</li>
+<li>步骤：
+<ol>
+<li>数据解析（图片地址）</li>
+<li>将存储图片地址的item提交到制定的管道类</li>
+<li>在管道文件中自定制一个基于ImagesPipeLine的一个管道类
+<ol>
+<li>get_media_request</li>
+<li>file_path</li>
+<li>item_completed</li>
+</ol>
+</li>
+<li>在配置文件中
+<ol>
+<li>指定图片存储的目录：IMAGES_STORE = './imgs_bobo'</li>
+<li>指定开启的管道：自定制的管道类</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>中间件：
+<ol>
+<li>下载中间件
+<ol>
+<li>位置：引擎和下载器之间</li>
+<li>作用：批量拦截到整个工程中所有的请求和响应</li>
+<li>拦截请求：
+<ol>
+<li>UA伪装</li>
+<li>代理IP</li>
+</ol>
+</li>
+<li>拦截响应：</li>
+</ol>
+</li>
+</ol>
+</li>
 </ol>
 ]]></content>
     </entry>
@@ -1031,15 +1285,6 @@ public class server {
 <p><img src="https://leilayz.github.io/post-images/1606021247871.png" alt="" loading="lazy"><br>
 运行同时就会看到结果客户端的结果，同时服务器端的结果为：<br>
 <img src="https://leilayz.github.io/post-images/1606021334397.png" alt="" loading="lazy"></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Hello World (不能随便改github名字)]]></title>
-        <id>https://leilayz.github.io/post/hello-world-bu-neng-sui-bian-gai-github-ming-zi/</id>
-        <link href="https://leilayz.github.io/post/hello-world-bu-neng-sui-bian-gai-github-ming-zi/">
-        </link>
-        <updated>2020-11-16T00:55:39.000Z</updated>
-        <content type="html"><![CDATA[<p>第一次安装Gridea, 其中我改了一次github的名字，发现很多东西都用不了，网页URL生成路径是错误的。解决方案是删除所有Gridea相关文件，重装Gridea，删除github账号，重新创建repository，生成Token才能正常工作。仅以此提醒各位，不要随便改github名字。</p>
 ]]></content>
     </entry>
 </feed>
