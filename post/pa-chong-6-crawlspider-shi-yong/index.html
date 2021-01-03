@@ -2,27 +2,30 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>关于 | 许愿</title>
+<title>爬虫（7）—— CrawlSpider使用 | 许愿</title>
 <link rel="shortcut icon" href="https://leilayz.github.io/favicon.ico?v=1609660502804">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://leilayz.github.io/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="关于 | 许愿 - Atom Feed" href="https://leilayz.github.io/atom.xml">
+<link rel="alternate" type="application/atom+xml" title="爬虫（7）—— CrawlSpider使用 | 许愿 - Atom Feed" href="https://leilayz.github.io/atom.xml">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
 
 
 
-    <meta name="description" content="
-欢迎来到我的小站呀，很高兴遇见你！🤝
+    <meta name="description" content="CrawlSpider：类，Spider的一个子类
 
-🏠 关于本站
-这是一个什么都会有的网站。
-👨‍💻 博主是谁
-我是一名即将毕业的计算机专业研究生。
-⛹ 兴趣爱好
-最爱游戏。
-📬 联系我呀
-zleiplease@qq.com
-..." />
+全站数据爬取的方式
+
+基于Spider：手动请求
+基于CrawlSpider
+
+
+CrawlSpider的使用
+
+创建一个工程
+cd XXX
+创建爬虫文件（CrawlSpider）
+
+s..." />
     <meta name="keywords" content="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
@@ -85,11 +88,11 @@ zleiplease@qq.com
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              关于
+              爬虫（7）—— CrawlSpider使用
             </h2>
             <div class="post-info">
               <span>
-                2019-01-24
+                2020-12-31
               </span>
               <span>
                 1 min read
@@ -99,36 +102,61 @@ zleiplease@qq.com
             
             <div class="post-content-wrapper">
               <div class="post-content">
-                <blockquote>
-<p>欢迎来到我的小站呀，很高兴遇见你！🤝</p>
-</blockquote>
-<h2 id="关于本站">🏠 关于本站</h2>
-<p>这是一个什么都会有的网站。</p>
-<h2 id="博主是谁">👨‍💻 博主是谁</h2>
-<p>我是一名即将毕业的计算机专业研究生。</p>
-<h2 id="兴趣爱好">⛹ 兴趣爱好</h2>
-<p>最爱游戏。</p>
-<h2 id="联系我呀">📬 联系我呀</h2>
-<p>zleiplease@qq.com</p>
+                <p>CrawlSpider：类，Spider的一个子类</p>
+<ol>
+<li>全站数据爬取的方式
+<ol>
+<li>基于Spider：手动请求</li>
+<li>基于CrawlSpider</li>
+</ol>
+</li>
+<li>CrawlSpider的使用
+<ol>
+<li>创建一个工程</li>
+<li>cd XXX</li>
+<li>创建爬虫文件（CrawlSpider）
+<ol>
+<li>scrapy genspider -t crawl xxx www.xxxx.com</li>
+<li>链接提取器
+<ol>
+<li>作用：根据指定的规则（allow）进行指定链接的提取</li>
+</ol>
+</li>
+<li>规则解析器
+<ol>
+<li>作用：将链接提取器提取到的链接进行指定规则（callback）的解析</li>
+</ol>
+</li>
+<li>需求：爬取sun网站中的编号，新闻标题，新闻内容，标号
+<ol>
+<li>分析：爬取的数据没有在同一张页面中。</li>
+<li>可以使用链接提取器提取所有的页码链接</li>
+<li>让链接提取器提取所有的新闻详情页的链接</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
 
               </div>
               <div class="toc-container">
-                <ul class="markdownIt-TOC">
-<li>
-<ul>
-<li><a href="#%E5%85%B3%E4%BA%8E%E6%9C%AC%E7%AB%99">🏠 关于本站</a></li>
-<li><a href="#%E5%8D%9A%E4%B8%BB%E6%98%AF%E8%B0%81">👨‍💻 博主是谁</a></li>
-<li><a href="#%E5%85%B4%E8%B6%A3%E7%88%B1%E5%A5%BD">⛹ 兴趣爱好</a></li>
-<li><a href="#%E8%81%94%E7%B3%BB%E6%88%91%E5%91%80">📬 联系我呀</a></li>
-</ul>
-</li>
-</ul>
-
+                
               </div>
             </div>
           </article>
         </div>
 
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://leilayz.github.io/post/pa-chong/">
+              <h3 class="post-title">
+                爬虫（5） —— selenium
+              </h3>
+            </a>
+          </div>
         
 
         
