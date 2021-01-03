@@ -2,16 +2,23 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Hello World (不能随便改github名字) | 许愿</title>
+<title>爬虫（7）—— 分布式爬虫 | 许愿</title>
 <link rel="shortcut icon" href="https://leilayz.github.io/favicon.ico?v=1609660464692">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://leilayz.github.io/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="Hello World (不能随便改github名字) | 许愿 - Atom Feed" href="https://leilayz.github.io/atom.xml">
+<link rel="alternate" type="application/atom+xml" title="爬虫（7）—— 分布式爬虫 | 许愿 - Atom Feed" href="https://leilayz.github.io/atom.xml">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
 
 
 
-    <meta name="description" content="第一次安装Gridea, 其中我改了一次github的名字，发现很多东西都用不了，网页URL生成路径是错误的。解决方案是删除所有Gridea相关文件，重装Gridea，删除github账号，重新创建repository，生成Token才能正..." />
+    <meta name="description" content="
+概念：搭建一个分布式的机群，让其对一组资源进行分布联合爬取。
+作用：提升效率
+
+如何实现分布式？
+
+安装scrapy-redis的组件
+原生的scrapy是不可以实现分布式的，必须要让scrapy结合scrapy-redis组件一起实现分..." />
     <meta name="keywords" content="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
@@ -74,21 +81,120 @@
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              Hello World (不能随便改github名字)
+              爬虫（7）—— 分布式爬虫
             </h2>
             <div class="post-info">
               <span>
-                2020-11-15
+                2021-01-02
               </span>
               <span>
-                1 min read
+                3 min read
               </span>
               
             </div>
             
             <div class="post-content-wrapper">
               <div class="post-content">
-                <p>第一次安装Gridea, 其中我改了一次github的名字，发现很多东西都用不了，网页URL生成路径是错误的。解决方案是删除所有Gridea相关文件，重装Gridea，删除github账号，重新创建repository，生成Token才能正常工作。仅以此提醒各位，不要随便改github名字。</p>
+                <ol>
+<li>概念：搭建一个分布式的机群，让其对一组资源进行分布联合爬取。</li>
+<li>作用：提升效率</li>
+</ol>
+<p>如何实现分布式？</p>
+<ol>
+<li>安装scrapy-redis的组件</li>
+<li>原生的scrapy是不可以实现分布式的，必须要让scrapy结合scrapy-redis组件一起实现分布式爬虫。</li>
+<li>为什么原生的scrapy不可以实现分布式？
+<ol>
+<li>调度器不可以被分布式集群共享</li>
+<li>管道不可以被分布式集群共享</li>
+</ol>
+</li>
+<li>scrapy-redis组件作用
+<ol>
+<li>可以给原生的scrapy框架提供可以被共享的管道和调度器</li>
+</ol>
+</li>
+<li>流程
+<ol>
+<li>创建一个工程</li>
+<li>修建一个基于CrawlSpider的爬虫文件</li>
+<li>修改当前的爬虫文件：
+<ol>
+<li>导包：from scrapy_redis.spiders import RedisCrawlSpider</li>
+<li>将start_urls和allowed_domains进行注释</li>
+<li>添加一个新属性：redis_key = 'sun' 可以被共享的调度器队列的名称</li>
+<li>编写数据解析相关的操作</li>
+<li>将当前爬虫类的父类修改成RedisCrawSpider</li>
+</ol>
+</li>
+<li>修改配置文件settings
+<ol>
+<li>指定使用可以被共享的管道：</li>
+<li>指定调度器：</li>
+<li>指定redis服务器：</li>
+<li>redis相关操作配置：
+<ol>
+<li>配置redis的配置文件
+<ol>
+<li>linux/mac :redis.conf</li>
+<li>windows:redis.windows.conf</li>
+<li>修改
+<ol>
+<li>将bind 127.0.0.1 注释</li>
+<li>将保护模式关闭：protected-mode yes -&gt; no</li>
+</ol>
+</li>
+<li>结合配置文件，开启redis服务
+<ol>
+<li>redis-server 配置文件<img src="https://leilayz.github.io/post-images/1609652412404.png" alt="" loading="lazy"></li>
+</ol>
+</li>
+<li>启动客户端
+<ol>
+<li>redis-cli<img src="https://leilayz.github.io/post-images/1609652428046.png" alt="" loading="lazy"></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>执行工程：
+<ol>
+<li>scrapy runspider xxx.py</li>
+<li>向调度器的队列中放入一个起始的url
+<ol>
+<li>调度器的队列在redis的客户端中
+<ol>
+<li>lpush xxx www.xxx.com</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<pre><code>#指定管道
+ITEM_PIPELINES = {
+    'scrapy_redis.pipelines.RedisPipeline': 400
+}
+#指定调度器
+# 增加了一个去重容器类的配置, 作用使用Redis的set集合来存储请求的指纹数据, 从而实现请求去重的持久化
+DUPEFILTER_CLASS = &quot;scrapy_redis.dupefilter.RFPDupeFilter&quot;
+# 使用scrapy-redis组件自己的调度器
+SCHEDULER = &quot;scrapy_redis.scheduler.Scheduler&quot;
+# 配置调度器是否要持久化, 也就是当爬虫结束了, 要不要清空Redis中请求队列和去重指纹的set。如果是True, 就表示要持久化存储, 就不清空数据, 否则清空数据
+SCHEDULER_PERSIST = True
+
+#指定redis
+REDIS_HOST = '127.0.0.1' #redis远程服务器的ip（修改）
+REDIS_PORT = 6379
+
+</code></pre>
+<p>爬取到的数据存储在了redis de proName:items这个数据结构中</p>
 
               </div>
               <div class="toc-container">
@@ -101,9 +207,9 @@
         
           <div class="next-post">
             <div class="next">下一篇</div>
-            <a href="https://leilayz.github.io/post/hello-gridea/">
+            <a href="https://leilayz.github.io/post/pa-chong/">
               <h3 class="post-title">
-                Hello Gridea
+                爬虫（5） —— selenium
               </h3>
             </a>
           </div>

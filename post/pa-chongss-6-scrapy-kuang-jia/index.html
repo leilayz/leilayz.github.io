@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>爬虫（6）—— scrapy框架 | 许愿</title>
-<link rel="shortcut icon" href="https://leilayz.github.io/favicon.ico?v=1609481380894">
+<link rel="shortcut icon" href="https://leilayz.github.io/favicon.ico?v=1609660464692">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://leilayz.github.io/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="爬虫（6）—— scrapy框架 | 许愿 - Atom Feed" href="https://leilayz.github.io/atom.xml">
@@ -26,7 +26,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="https://leilayz.github.io">
-  <img class="avatar" src="https://leilayz.github.io/images/avatar.png?v=1609481380894" alt="">
+  <img class="avatar" src="https://leilayz.github.io/images/avatar.png?v=1609660464692" alt="">
   </a>
   <h1 class="site-title">
     许愿
@@ -83,7 +83,7 @@
             </h2>
             <div class="post-info">
               <span>
-                2020-12-26
+                2020-12-25
               </span>
               <span>
                 6 min read
@@ -184,9 +184,16 @@ mysql&gt; ALTER TABLE database.table MODIFY COLUMN column_name VARCHAR(255) CHAR
 <pre><code>3. 创建新表时可直接设置：
 </code></pre>
 <pre><code>&gt; CREATE TABLE My_Table_Name (
- twitter_id_str VARCHAR(255) NOT NULL UNIQUE,
- twitter_screen_name VARCHAR(512) CHARACTER SET utf8 COLLATE utf8_unicode_ci,
- .....
+ title VARCHAR(255) NOT NULL UNIQUE,
+ content VARCHAR(3000) CHARACTER SET utf8 COLLATE utf8_unicode_ci
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+# 创建网易新闻数据表
+CREATE TABLE wangyi (
+ title VARCHAR(255) NOT NULL UNIQUE,
+ content VARCHAR(10000) CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+ time VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+ source VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 </code></pre>
 <p>简答题：将爬取到的数据一份存储到本地，一份存储到数据库，如何实现？</p>
@@ -276,11 +283,22 @@ Spider<br>
 <li>作用：批量拦截到整个工程中所有的请求和响应</li>
 <li>拦截请求：
 <ol>
-<li>UA伪装</li>
-<li>代理IP</li>
+<li>UA伪装：process_request</li>
+<li>代理IP: process_exception</li>
 </ol>
 </li>
-<li>拦截响应：</li>
+<li>拦截响应：
+<ol>
+<li>篡改响应数据，响应对象</li>
+<li>需求：爬取网易新闻中的新闻数据（标题和内容）
+<ol>
+<li>通过首页解析5大板块（没有动态加载）</li>
+<li>板块内部对应的新闻标题都是动态加载出来的</li>
+<li>通过解析出每一条新闻详情页的URL 获取详情页的页面源码，解析出新闻内容</li>
+</ol>
+</li>
+</ol>
+</li>
 </ol>
 </li>
 </ol>
