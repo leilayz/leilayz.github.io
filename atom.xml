@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://leilayz.github.io</id>
     <title>许愿</title>
-    <updated>2021-01-03T07:55:13.155Z</updated>
+    <updated>2021-01-26T22:43:57.154Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://leilayz.github.io"/>
     <link rel="self" href="https://leilayz.github.io/atom.xml"/>
@@ -10,6 +10,65 @@
     <logo>https://leilayz.github.io/images/avatar.png</logo>
     <icon>https://leilayz.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, 许愿</rights>
+    <entry>
+        <title type="html"><![CDATA[小程序开发]]></title>
+        <id>https://leilayz.github.io/post/xiao-cheng-xu-kai-fa/</id>
+        <link href="https://leilayz.github.io/post/xiao-cheng-xu-kai-fa/">
+        </link>
+        <updated>2021-01-22T14:45:38.000Z</updated>
+        <content type="html"><![CDATA[<ol>
+<li>Flex布局</li>
+<li>DPR 设备像素比：物理像素/设备独立像素 = DPR</li>
+<li>移动端适配方案
+<ol>
+<li>viewpoint适配</li>
+<li>rem适配</li>
+</ol>
+</li>
+</ol>
+<h1 id="1-数据绑定">1. 数据绑定</h1>
+<ol>
+<li>data中初始化数据</li>
+<li>修改数据：this.setData
+<ol>
+<li>修改数据的行为始终是同步的</li>
+</ol>
+</li>
+</ol>
+<h1 id="2-冒泡">2. 冒泡</h1>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[安卓 —— 对话框/提示消息]]></title>
+        <id>https://leilayz.github.io/post/an-zhuo-dui-hua-kuang-ti-shi-xiao-xi/</id>
+        <link href="https://leilayz.github.io/post/an-zhuo-dui-hua-kuang-ti-shi-xiao-xi/">
+        </link>
+        <updated>2021-01-03T01:34:06.000Z</updated>
+        <content type="html"><![CDATA[<ol>
+<li>对话框（需点击互动）</li>
+</ol>
+<pre><code>            new AlertDialog.Builder(GetTraces.this)
+                    .setTitle(&quot;Empty Input!&quot;)
+                    .setMessage(&quot;Please input a valid Pid.&quot;)
+                    .setCancelable(false)
+                    .setPositiveButton(&quot;ok&quot;, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Whatever...
+                        }
+                    }).show();
+</code></pre>
+<ol start="2">
+<li>提示消息（无需互动，持续一会自动消失）</li>
+</ol>
+<pre><code>        Context context = getApplicationContext();
+        CharSequence text = &quot;Start Strace Successfully.&quot;;
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[爬虫（7）—— 分布式爬虫]]></title>
         <id>https://leilayz.github.io/post/pa-chong-7-fen-bu-shi-pa-chong/</id>
@@ -116,15 +175,6 @@ REDIS_PORT = 6379
 
 </code></pre>
 <p>爬取到的数据存储在了redis de proName:items这个数据结构中</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[爬虫（8）—— 增量式爬虫]]></title>
-        <id>https://leilayz.github.io/post/pa-chong-8-zeng-liang-shi-pa-chong/</id>
-        <link href="https://leilayz.github.io/post/pa-chong-8-zeng-liang-shi-pa-chong/">
-        </link>
-        <updated>2021-01-01T11:48:59.000Z</updated>
-        <content type="html"><![CDATA[<p>概念：检测网站数据更新情况，只会爬取网站最新更新出来的数据。</p>
 ]]></content>
     </entry>
     <entry>
@@ -794,248 +844,6 @@ pip install requests</p>
 1. 正则<br>
 2. bs4<br>
 3. xpath</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[排序]]></title>
-        <id>https://leilayz.github.io/post/pai-xu/</id>
-        <link href="https://leilayz.github.io/post/pai-xu/">
-        </link>
-        <updated>2020-11-21T18:21:07.000Z</updated>
-        <content type="html"><![CDATA[<h1 id="排序算法对比">排序算法对比</h1>
-<figure data-type="image" tabindex="1"><img src="https://leilayz.github.io/post-images/1606084540367.PNG" alt="" loading="lazy"></figure>
-<h1 id="冒泡排序">冒泡排序</h1>
-<pre><code>//冒泡排序
-void bubbleSort(vector&lt;int&gt; &amp;nums) {
-    int n = nums.size();
-
-    for(int i = 0; i &lt; n; i++) { //n个数字，比较N次，每次将一个元素放到正确的位置
-        int flag = false;
-        for(int j = 0; j &lt; n - i - 1; j++) {
-            if(nums[j] &gt; nums[j + 1]){
-                swap(nums[j],nums[j + 1]);
-                flag = true;
-            }
-        }
-        if(!flag) break;
-
-    }
-}
-</code></pre>
-<h1 id="插入排序">插入排序</h1>
-<pre><code>//插入排序
-void insertionSort(vector&lt;int&gt; &amp;nums) {
-    int n = nums.size();
-
-    for (int i = 1; i &lt; n; i++)
-    {
-        int temp = nums[i];
-        int j = i; //寻找插入位置
-
-        while (j - 1 &gt;= 0 &amp;&amp; temp &lt; nums[j - 1])
-        {
-            nums[j] = nums[j - 1];
-            j--;
-        }
-       
-        nums[j] = temp;
-    }
-}
-</code></pre>
-<h1 id="选择排序">选择排序</h1>
-<pre><code>//选择排序
-void selectionSort(vector&lt;int&gt; &amp;nums) {
-    int n = nums.size();
-
-    for (int i = 0; i &lt; n - 1; i++) //因为在底下是从i 的后面找，所以这里i &lt; n - 1
-    {
-        int min = i;
-
-        for (int j = i + 1; j &lt; n; j++) //
-        {
-            if (nums[j] &lt; nums[min])
-            {
-                min = j;
-            }
-            
-        }
-        swap(nums[i],nums[min]); 
-    }
-}
-</code></pre>
-<h1 id="希尔排序">希尔排序</h1>
-<pre><code>//希尔排序
-void shellSort(vector&lt;int&gt; &amp;nums) {
-    int n = nums.size();
-
-    for (int gap = n / 2; gap &gt; 0; gap /= 2)
-    {
-        for (int i = gap; i &lt; n; i++)
-        {
-            int j = i; // 寻找插入位置
-            int temp = nums[j];
-
-            while (j - gap &gt;= 0 &amp;&amp; nums[j - gap] &gt; temp)
-            {
-                    //swap(nums[j], nums[j - gap]);
-                nums[j] = nums[j - gap];
-                j -= gap;
-            }
-            nums[j] = temp;
-        }
-    }
-}
-</code></pre>
-<h1 id="归并排序">归并排序</h1>
-<p>归并排序分为两个步骤，先分成左右两边，再合并起来。</p>
-<pre><code>void mergeSort(vector&lt;int&gt; &amp;nums) {
-    vector&lt;int&gt; temp(nums.size(), 0);
-    mergeSortSort(nums, 0, nums.size() - 1, temp);
-}
-
-void mergeSortSort(vector&lt;int&gt; &amp;nums,int left, int right, vector&lt;int&gt; &amp;temp) {
-    if (left &lt; right) {
-        cout&lt;&lt;&quot;left: &quot;&lt;&lt;left&lt;&lt;&quot;  &quot;&lt;&lt;&quot;right: &quot;&lt;&lt;right&lt;&lt;endl;
-        cout&lt;&lt;&quot;left: &quot;&lt;&lt;left&lt;&lt;&quot;  &quot;&lt;&lt;&quot;right: &quot;&lt;&lt;right&lt;&lt;endl;
-        int mid = (left + right) / 2;
-        //分开
-        mergeSortSort(nums, left, mid, temp);
-        mergeSortSort(nums, mid + 1, right, temp);
-        //合并
-        mergeSortMerge(nums, left, mid, right, temp);
-    }
-}
-
-void mergeSortMerge(vector&lt;int&gt; &amp;nums,int left, int mid, int right, vector&lt;int&gt; &amp;temp) {
-    int i = left;
-    int j = mid + 1;
-    int t = 0;
-
-    //将两个vector里面较小的拿出来放进temp里
-    while (i &lt;= mid &amp;&amp; j &lt;= right)
-    {
-        if (nums[i] &lt;= nums[j])
-        {
-            temp[t++] = nums[i++];
-        }
-        else {
-            temp[t++] = nums[j++];
-        }
-        
-    }
-
-    while (i &lt;= mid) 
-    {
-        temp[t++] = nums[i++];
-    }
-
-    while (j &lt;= right)
-    {
-        temp[t++] = nums[j++];
-    }
-
-    t = 0;
-    while (left &lt;= right)
-    {
-        nums[left++] = temp[t++];
-    }
-}
-
-</code></pre>
-<h1 id="快速排序">快速排序</h1>
-<pre><code>//快速排序
-void quickSortSort(vector&lt;int&gt; &amp;nums, int left,int right);
-void quickSortSort2(vector&lt;int&gt; &amp;nums, int start, int end);
-
-void quickSort(vector&lt;int&gt; &amp;nums) {
-    quickSortSort(nums, 0, nums.size() - 1);
-}
-
-//https://wiki.jikexueyuan.com/project/easy-learn-algorithm/fast-sort.html
-void quickSortSort(vector&lt;int&gt; &amp;nums, int left,int right)
-{
-    if(left &gt; right)
-       return;
-
-    int temp = nums[left]; //temp中存的就是基准数
-    int i = left;
-    int j = right;
-
-    while(i != j)
-    {
-       //顺序很重要，要先从右边开始找
-        while(nums[j] &gt;= temp &amp;&amp; i &lt; j)
-            j--;
-       //再找右边的
-        while(nums[i] &lt;= temp &amp;&amp; i &lt; j)
-            i++;
-       //交换两个数在数组中的位置
-       if(i &lt; j)
-       {
-           swap(nums[i], nums[j]);
-       }
-    }
-    //最终将基准数归位
-    nums[left] = nums[i];
-    nums[i] = temp;
-
-    quickSortSort(nums, left, i-1);//继续处理左边的，这里是一个递归的过程
-    quickSortSort(nums, i+1, right);//继续处理右边的 ，这里是一个递归的过程
-}
-
-//写法2
-void quickSortSort2(vector&lt;int&gt; &amp;nums, int start, int end) {
-    if (start &gt;= end) {
-        return;
-    }
-
-    int left = start, right = end;
-
-    //选择锚点
-    int pivot = nums[(start + end) / 2];
-
-    while (left &lt;= right)
-    {
-        //从左向右找，找到一个大于锚点的数
-        while (left &lt;= right &amp;&amp; nums[left] &lt; pivot)
-        {
-            left++;
-        }
-
-        //从右向左找，找到一个小于锚点的数
-        while (left &lt;= right &amp;&amp; nums[right] &gt; pivot)
-        {
-            right--;
-        }
-
-        //交换
-        if (left &lt;= right) {
-            swap(nums[left],nums[right]);
-
-            left++;
-            right--;
-        }
-    }
-
-    quickSortSort2(nums, start, right);
-    quickSortSort2(nums, left, end);
-}
-</code></pre>
-<p>Notes:</p>
-<ol>
-<li>
-<p>希尔排序gap的选择：通常选择增量gap = 数组length / 2，缩小增量继续以gap = gap / 2的方式。</p>
-</li>
-<li>
-<p>快排的最坏情况的时间复杂度O（n^2）。<br>
-原因：</p>
-<ol>
-<li>在分解时每次选取的主元素为最小元素。</li>
-<li>在分解时每次选取的主元素为最大元素。</li>
-</ol>
-<p>如何改善：三值取中法，即取左端、中间、右端三个数，然后进行排序，将中间数作为锚点值。</p>
-</li>
-</ol>
 ]]></content>
     </entry>
 </feed>

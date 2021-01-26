@@ -2,27 +2,20 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>关于 | 许愿</title>
+<title>安卓 —— 对话框/提示消息 | 许愿</title>
 <link rel="shortcut icon" href="https://leilayz.github.io/favicon.ico?v=1611701023568">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://leilayz.github.io/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="关于 | 许愿 - Atom Feed" href="https://leilayz.github.io/atom.xml">
+<link rel="alternate" type="application/atom+xml" title="安卓 —— 对话框/提示消息 | 许愿 - Atom Feed" href="https://leilayz.github.io/atom.xml">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
 
 
 
     <meta name="description" content="
-欢迎来到我的小站呀，很高兴遇见你！🤝
+对话框（需点击互动）
 
-🏠 关于本站
-这是一个什么都会有的网站。
-👨‍💻 博主是谁
-我是一名即将毕业的计算机专业研究生。
-⛹ 兴趣爱好
-最爱游戏。
-📬 联系我呀
-zleiplease@qq.com
-..." />
+            new AlertDialog.Builder(GetTraces.this)
+                    .setTitle(&quot;Empty Input!&quot;)..." />
     <meta name="keywords" content="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
@@ -85,11 +78,11 @@ zleiplease@qq.com
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              关于
+              安卓 —— 对话框/提示消息
             </h2>
             <div class="post-info">
               <span>
-                2019-01-24
+                2021-01-02
               </span>
               <span>
                 1 min read
@@ -99,36 +92,47 @@ zleiplease@qq.com
             
             <div class="post-content-wrapper">
               <div class="post-content">
-                <blockquote>
-<p>欢迎来到我的小站呀，很高兴遇见你！🤝</p>
-</blockquote>
-<h2 id="关于本站">🏠 关于本站</h2>
-<p>这是一个什么都会有的网站。</p>
-<h2 id="博主是谁">👨‍💻 博主是谁</h2>
-<p>我是一名即将毕业的计算机专业研究生。</p>
-<h2 id="兴趣爱好">⛹ 兴趣爱好</h2>
-<p>最爱游戏。</p>
-<h2 id="联系我呀">📬 联系我呀</h2>
-<p>zleiplease@qq.com</p>
+                <ol>
+<li>对话框（需点击互动）</li>
+</ol>
+<pre><code>            new AlertDialog.Builder(GetTraces.this)
+                    .setTitle(&quot;Empty Input!&quot;)
+                    .setMessage(&quot;Please input a valid Pid.&quot;)
+                    .setCancelable(false)
+                    .setPositiveButton(&quot;ok&quot;, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Whatever...
+                        }
+                    }).show();
+</code></pre>
+<ol start="2">
+<li>提示消息（无需互动，持续一会自动消失）</li>
+</ol>
+<pre><code>        Context context = getApplicationContext();
+        CharSequence text = &quot;Start Strace Successfully.&quot;;
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+</code></pre>
 
               </div>
               <div class="toc-container">
-                <ul class="markdownIt-TOC">
-<li>
-<ul>
-<li><a href="#%E5%85%B3%E4%BA%8E%E6%9C%AC%E7%AB%99">🏠 关于本站</a></li>
-<li><a href="#%E5%8D%9A%E4%B8%BB%E6%98%AF%E8%B0%81">👨‍💻 博主是谁</a></li>
-<li><a href="#%E5%85%B4%E8%B6%A3%E7%88%B1%E5%A5%BD">⛹ 兴趣爱好</a></li>
-<li><a href="#%E8%81%94%E7%B3%BB%E6%88%91%E5%91%80">📬 联系我呀</a></li>
-</ul>
-</li>
-</ul>
-
+                
               </div>
             </div>
           </article>
         </div>
 
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://leilayz.github.io/post/pa-chong-7-fen-bu-shi-pa-chong/">
+              <h3 class="post-title">
+                爬虫（7）—— 分布式爬虫
+              </h3>
+            </a>
+          </div>
         
 
         
