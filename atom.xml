@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://leilayz.github.io</id>
     <title>许愿</title>
-    <updated>2021-01-26T22:43:57.154Z</updated>
+    <updated>2021-03-02T09:41:32.647Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://leilayz.github.io"/>
     <link rel="self" href="https://leilayz.github.io/atom.xml"/>
@@ -10,6 +10,135 @@
     <logo>https://leilayz.github.io/images/avatar.png</logo>
     <icon>https://leilayz.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, 许愿</rights>
+    <entry>
+        <title type="html"><![CDATA[成语爬虫及云图]]></title>
+        <id>https://leilayz.github.io/post/cheng-yu-pa-chong-ji-yun-tu/</id>
+        <link href="https://leilayz.github.io/post/cheng-yu-pa-chong-ji-yun-tu/">
+        </link>
+        <updated>2021-03-02T09:37:13.000Z</updated>
+        <content type="html"><![CDATA[<p>效果：<br>
+代码中第一个网址：<br>
+<img src="https://leilayz.github.io/post-images/1614677860354.png" alt="" loading="lazy"><br>
+代码中第二个网址：<br>
+<img src="https://leilayz.github.io/post-images/1614677863162.png" alt="" loading="lazy"></p>
+<pre><code>from lxml import etree
+import requests
+import os
+import re
+
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+from PIL import Image
+import numpy as np
+
+#需求：解析成语网站成语并形成云图
+if __name__ == &quot;__main__&quot;:
+    # 可在主站中自选网址，但要保证网址内容结构相同
+    # url = 'https://www.lz13.cn/haocihaoju/82945.html'
+    url = 'https://www.lz13.cn/haocihaoju/82942.html'
+
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36'
+    }
+    response = requests.get(url=url, headers=headers)
+    response.encoding = 'utf-8'
+    page_text = response.text
+
+    tree = etree.HTML(page_text)
+    all_city_namelist = tree.xpath('//*[@id=&quot;node-8890&quot;]/div[2]/p')
+
+    all_words = []
+    for a in all_city_namelist:
+        city_name = a.xpath('.//text()')[0]
+        vir = re.findall(r&quot;、(.+?)：&quot;, city_name)
+
+        if len(vir) &gt; 0:
+            all_words.append(vir[0])
+
+    print(all_words, len(all_words))
+
+    # 构造云图字符串
+    wordClouldText = ' '.join(all_words)
+    # 设置蒙版（设定你想要的形状，可设可不设）
+    mask = np.array(Image.open('heart.jpg'))
+    # 中文字体路径（不设置会影响中文显示）
+    font_path = r'C:\Windows\Fonts\SIMHEI.ttf'
+    # 配置云图
+    wc = WordCloud(font_path=font_path,mask=mask, background_color=&quot;white&quot;,scale=3)
+    # 形成云图
+    wc.generate(wordClouldText)
+    plt.imshow(wc, interpolation=&quot;bilinear&quot;)
+    plt.axis('off')
+    plt.show()
+</code></pre>
+<p>蒙版图片：<br>
+<img src="https://leilayz.github.io/post-images/1614677989521.jpg" alt="" loading="lazy"></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[批量去除图片水印]]></title>
+        <id>https://leilayz.github.io/post/pi-liang-qu-chu-tu-pian-shui-yin/</id>
+        <link href="https://leilayz.github.io/post/pi-liang-qu-chu-tu-pian-shui-yin/">
+        </link>
+        <updated>2021-03-02T08:56:27.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="1-去除图片底部水印">1. 去除图片底部水印</h1>
+<p>函数文件 HandleWatermark.py</p>
+<pre><code>import cv2
+import numpy as np
+
+# 裁剪掉图片竖直向下边的5%，去掉图片下边的水印
+def eraseWatermark(image_path, new_image_path):
+    # 纯英文路径
+    # img=cv2.imread(image_path,1)
+    # 带中文路径
+    img = cv2.imdecode(np.fromfile(image_path, dtype=np.uint8), 1)
+    hight,width,depth=img.shape[0:3]
+    #截取
+    cropped = img[0:int(0.95*hight), 0:width]  # 裁剪坐标为[y0:y1, x0:x1]
+    # 纯英文路径
+    #cv2.imwrite(new_image_path, cropped)
+    # 中文路径
+    cv2.imencode('.jpg', cropped)[1].tofile(new_image_path)
+</code></pre>
+<p>主函数文件</p>
+<pre><code>import os
+import filetype
+from HandleWatermark import eraseWatermark
+
+# 源路径
+filePath = r'D:\picture\test'
+# 目的路径 （此处需指定目的路径）
+new_filePath = r'D:\picture\test_copy'
+
+if not os.path.exists(new_filePath):
+    os.mkdir(new_filePath)
+
+all_files = []
+new_allfiles = []
+# 获取所有目录及文件
+for root, dirs, files in os.walk(filePath):
+    # 复制所有子目录到新目录
+    for dir_name in dirs:
+        dir_name = os.path.join(root, dir_name)
+        new_dir = new_filePath + dir_name[len(filePath):]
+        if not os.path.exists(new_dir):
+            os.mkdir(new_dir)
+    # 构造所有文件的新路径
+    for name in files:
+        file = os.path.join(root, name)
+        all_files.append(file)
+        new_file = new_filePath + file[len(filePath):]
+        new_allfiles.append(new_file)
+
+for file, new_file in zip(all_files, new_allfiles):
+    print(file, '-&gt;', new_file)
+    if filetype.guess(file) is None or filetype.guess(file).extension != 'jpg':
+        continue
+    eraseWatermark(file, new_file)
+
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[小程序开发]]></title>
         <id>https://leilayz.github.io/post/xiao-cheng-xu-kai-fa/</id>
@@ -640,210 +769,6 @@ await 用来挂起阻塞方法的执行</p>
 </ol>
 </li>
 </ol>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[爬虫（2）——数据解析]]></title>
-        <id>https://leilayz.github.io/post/pa-chong-shu-ju-jie-xi/</id>
-        <link href="https://leilayz.github.io/post/pa-chong-shu-ju-jie-xi/">
-        </link>
-        <updated>2020-12-14T09:21:07.000Z</updated>
-        <content type="html"><![CDATA[<p>聚焦爬虫：爬取页面中指定的页面内容</p>
-<ol>
-<li>编码流程
-<ol>
-<li>指定URL</li>
-<li>发起请求</li>
-<li>获取相应数据</li>
-<li>数据解析</li>
-<li>持久化存储</li>
-</ol>
-</li>
-</ol>
-<p>数据解析分类：<br>
-1. 正则<br>
-2. bs4<br>
-3. xpath(***)</p>
-<p>数据解析原理概述<br>
-解析的局部文本内容都会在标签之间或标签对应的属性中进行存储</p>
-<ol>
-<li>进行指定标签的定位</li>
-<li>标签或标签对应的属性中存储的数据值进行提取（解析）</li>
-</ol>
-<p>需求：</p>
-<ol>
-<li>爬取糗事百科图片</li>
-</ol>
-<div class="thumb">
-<a href="/article/123709847" target="_blank">
-<img src="//pic.qiushibaike.com/system/pictures/12370/123709847/medium/UPDVL4S97BIKJCSY.jpg" alt="糗事#123709847" class="illustration" width="100%" height="auto">
-</a>
-</div>
-<p>提取img src<br>
-ex = '<div class="thumb">.<em>?&lt;img src=&quot;(.</em>?)&quot; alt.*?</div>)&gt;'</p>
-<p>bs4进行数据解析：</p>
-<ol>
-<li>数据解析的原理：</li>
-<li>提取标签、标签属性中存储的数据值<br>
-bs4数据解析的原理：</li>
-<li>实例化一个BeatifulSoup对象，并且将页码源码数据加载到该对象中</li>
-<li>通过调用BeatifulSoup对象中相关的属性或者方法进行标签定位和数据提取<br>
-环境安装：</li>
-<li>pip install bs4</li>
-<li>pip install lxml<br>
-如何实例化BeautifulSoup对象</li>
-<li>from bs4 import BeautifulSoup</li>
-<li>对象的实例化
-<ol>
-<li>将本地的html文档中的数据加载到该对象中</li>
-</ol>
-<pre><code>#将本地的html文档中的数据加载到该对象中
-fp = open('./test.html','r',encoding='utf-8')
-BeautifulSoup(fp,'lxml') 
-</code></pre>
-<ol start="2">
-<li>将互联网上获取的页面源码加载到该对象中</li>
-</ol>
-<pre><code>page_text = response.text
-BeautifulSoup(fp,'lxml') 
-</code></pre>
-<ol start="3">
-<li>提供用于数据解析的方法和属性</li>
-<li>soup.tagName #soup.tagName 返回第一次出现的tagName对应的标签</li>
-<li>soup.find('tagName')  #返回第一次出现的tagName对应的标签</li>
-<li>soup.find('tagName, calss = 'song') # 属性定位</li>
-<li>soup.find_all('tagName') #返回所有符合要求的所有标签并返回一个列表</li>
-<li>soup.select('.tang') #某种选择器，返回的是一个列表</li>
-<li>soup.select('某一种选择器（id, calss, 标签选择器）')，返回的是一个列表</li>
-<li>soup.select('.tang &gt; ul &gt; li &gt; a') [0]: &gt; 表示的是一个层级</li>
-<li>soup.select('.tang &gt; ul &gt; li a')[0] : 空格表示的是多个层级</li>
-<li>获取标签之间的文本数据
-<ol>
-<li>soup.a.text/string/get_text()</li>
-<li>text/get_text()：可以获取某一个标签中所有的文本内容</li>
-<li>string：只可以获取直系的文本内容</li>
-</ol>
-</li>
-<li>获取标签中的属性值
-<ol>
-<li>soup.a['herf']</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-<p>xpath解析：最常用且最便捷高效的一种解析方式。通用性。</p>
-<p>xpath解析原理：<br>
-1. 实例化一个etree的对象，且需要将被解析的页面源码数据加载到该对象中。<br>
-2. 调用etree对象中的xpath方法结合着xpath表达式实现标签的定位和内容的捕获。<br>
-环境的安装：<br>
-1. pip install lxml<br>
-如何实例化一个etree对象：from lxml import etree<br>
-1. 将本地的html文档中的源码数据加载到etree对象中：<br>
-etree.parse(filePath)<br>
-2. 将互联网上获取的源码数据加载到该对象中<br>
-etree.HTML('page_text')<br>
-xpath表达式：</p>
-<ol>
-<li>/：表示的是从根节点开始定位，表示一个层级</li>
-<li>//： 表示的是多个层级。可以表示从任意位置开始定位。</li>
-<li>属性定位：//div[@class=&quot;song&quot;] 通用格式：tag[@attrName=&quot;attrValue&quot;]</li>
-<li>索引定位：//div[@class=&quot;song&quot;]/p[3] 索引是从1开始的。</li>
-<li>取文本
-<ol>
-<li>/text() 返回的是一个标签直系文本内容，列表格式。</li>
-<li>//text() 返回的是标签下所有的文本。</li>
-</ol>
-</li>
-<li>取属性
-<ol>
-<li>/@attrName    ==&gt; img/@src</li>
-</ol>
-</li>
-</ol>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[爬虫（1）——requests模块]]></title>
-        <id>https://leilayz.github.io/post/pa-chong-1/</id>
-        <link href="https://leilayz.github.io/post/pa-chong-1/">
-        </link>
-        <updated>2020-12-13T13:08:13.000Z</updated>
-        <content type="html"><![CDATA[<p>robots.txt协议：<br>
-君子协议，规定了网站中哪些数据可以被爬虫爬取，哪些数据不可以被爬取。</p>
-<p>http协议：</p>
-<ol>
-<li>概念： 服务器和客户端进行数据交互的一种形式。<br>
-常用请求头信息</li>
-<li>User-Agent: 请求载体的身份标识。</li>
-<li>Connection: 请求完毕后，是断开连接还是保持连接。<br>
-常用响应头信息</li>
-<li>Content-Type: 服务器响应回客户端的数据类型</li>
-</ol>
-<p>https协议：</p>
-<ol>
-<li>安全的超文本传输协议</li>
-</ol>
-<p>加密方式：</p>
-<ol>
-<li>对称密钥加密</li>
-<li>非对称密钥加密</li>
-<li>证书密钥加密</li>
-</ol>
-<p>使用模块：<br>
-urllib模块（过于古老）（×）<br>
-requests 模块 : Python中原生的一款基于网络请求的模块，功能强大，简单便捷，效率高。</p>
-<p>如何使用：</p>
-<ol>
-<li>指定URL</li>
-<li>发起请求</li>
-<li>获取响应数据</li>
-<li>持久化存储</li>
-</ol>
-<p>环境安装：<br>
-pip install requests</p>
-<p>实战编码：</p>
-<ol>
-<li>爬取搜狗首页</li>
-</ol>
-<p>巩固：</p>
-<ol>
-<li>简易网页采集器
-<ol>
-<li>UA检测</li>
-<li>UA伪装</li>
-</ol>
-</li>
-<li>百度翻译
-<ol>
-<li>post请求（携带了参数）</li>
-<li>响应数据是一组json数据</li>
-</ol>
-</li>
-<li>豆瓣电影：</li>
-<li>肯德基餐厅:</li>
-<li>国家药品进度管理总局化妆品生产许可证
-<ol>
-<li>动态加载数据</li>
-<li>首页中对应的企业信息数据是通过ajax动态请求到的</li>
-<li>同光对详情页url的观察发现：
-<ol>
-<li>url的域名都是一样的，只有携带的参数（id）不一样</li>
-<li>id值可以从首页对应的ajax数据中得到</li>
-<li>域名和id值组合成新的url访问详情数据</li>
-<li>详情页的数据也是ajax动态加载得到的。</li>
-<li>观察到所有post请求的url都是一样的，只有id值是不同的。如果可以批量获取多家企业的id后，就可以将id和url形成完整的AJAX请求</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-<p>展望：<br>
-数据解析：<br>
-聚焦爬虫<br>
-1. 正则<br>
-2. bs4<br>
-3. xpath</p>
 ]]></content>
     </entry>
 </feed>

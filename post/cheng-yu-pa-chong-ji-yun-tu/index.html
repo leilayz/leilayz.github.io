@@ -2,23 +2,27 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>爬虫（7）—— 分布式爬虫 | 许愿</title>
+<title>成语爬虫及云图 | 许愿</title>
 <link rel="shortcut icon" href="https://leilayz.github.io/favicon.ico?v=1614678084968">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://leilayz.github.io/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="爬虫（7）—— 分布式爬虫 | 许愿 - Atom Feed" href="https://leilayz.github.io/atom.xml">
+<link rel="alternate" type="application/atom+xml" title="成语爬虫及云图 | 许愿 - Atom Feed" href="https://leilayz.github.io/atom.xml">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
 
 
 
-    <meta name="description" content="
-概念：搭建一个分布式的机群，让其对一组资源进行分布联合爬取。
-作用：提升效率
+    <meta name="description" content="效果：
+代码中第一个网址：
 
-如何实现分布式？
+代码中第二个网址：
 
-安装scrapy-redis的组件
-原生的scrapy是不可以实现分布式的，必须要让scrapy结合scrapy-redis组件一起实现分..." />
+from lxml import etree
+import requests
+import os
+import re
+
+from wordcloud import WordCloud
+im..." />
     <meta name="keywords" content="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
@@ -81,120 +85,77 @@
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              爬虫（7）—— 分布式爬虫
+              成语爬虫及云图
             </h2>
             <div class="post-info">
               <span>
-                2021-01-02
+                2021-03-02
               </span>
               <span>
-                3 min read
+                2 min read
               </span>
               
             </div>
             
             <div class="post-content-wrapper">
               <div class="post-content">
-                <ol>
-<li>概念：搭建一个分布式的机群，让其对一组资源进行分布联合爬取。</li>
-<li>作用：提升效率</li>
-</ol>
-<p>如何实现分布式？</p>
-<ol>
-<li>安装scrapy-redis的组件</li>
-<li>原生的scrapy是不可以实现分布式的，必须要让scrapy结合scrapy-redis组件一起实现分布式爬虫。</li>
-<li>为什么原生的scrapy不可以实现分布式？
-<ol>
-<li>调度器不可以被分布式集群共享</li>
-<li>管道不可以被分布式集群共享</li>
-</ol>
-</li>
-<li>scrapy-redis组件作用
-<ol>
-<li>可以给原生的scrapy框架提供可以被共享的管道和调度器</li>
-</ol>
-</li>
-<li>流程
-<ol>
-<li>创建一个工程</li>
-<li>修建一个基于CrawlSpider的爬虫文件</li>
-<li>修改当前的爬虫文件：
-<ol>
-<li>导包：from scrapy_redis.spiders import RedisCrawlSpider</li>
-<li>将start_urls和allowed_domains进行注释</li>
-<li>添加一个新属性：redis_key = 'sun' 可以被共享的调度器队列的名称</li>
-<li>编写数据解析相关的操作</li>
-<li>将当前爬虫类的父类修改成RedisCrawSpider</li>
-</ol>
-</li>
-<li>修改配置文件settings
-<ol>
-<li>指定使用可以被共享的管道：</li>
-<li>指定调度器：</li>
-<li>指定redis服务器：</li>
-<li>redis相关操作配置：
-<ol>
-<li>配置redis的配置文件
-<ol>
-<li>linux/mac :redis.conf</li>
-<li>windows:redis.windows.conf</li>
-<li>修改
-<ol>
-<li>将bind 127.0.0.1 注释</li>
-<li>将保护模式关闭：protected-mode yes -&gt; no</li>
-</ol>
-</li>
-<li>结合配置文件，开启redis服务
-<ol>
-<li>redis-server 配置文件<img src="https://leilayz.github.io/post-images/1609652412404.png" alt="" loading="lazy"></li>
-</ol>
-</li>
-<li>启动客户端
-<ol>
-<li>redis-cli<img src="https://leilayz.github.io/post-images/1609652428046.png" alt="" loading="lazy"></li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-<li>执行工程：
-<ol>
-<li>scrapy runspider xxx.py</li>
-<li>向调度器的队列中放入一个起始的url
-<ol>
-<li>调度器的队列在redis的客户端中
-<ol>
-<li>lpush xxx www.xxx.com</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-<pre><code>#指定管道
-ITEM_PIPELINES = {
-    'scrapy_redis.pipelines.RedisPipeline': 400
-}
-#指定调度器
-# 增加了一个去重容器类的配置, 作用使用Redis的set集合来存储请求的指纹数据, 从而实现请求去重的持久化
-DUPEFILTER_CLASS = &quot;scrapy_redis.dupefilter.RFPDupeFilter&quot;
-# 使用scrapy-redis组件自己的调度器
-SCHEDULER = &quot;scrapy_redis.scheduler.Scheduler&quot;
-# 配置调度器是否要持久化, 也就是当爬虫结束了, 要不要清空Redis中请求队列和去重指纹的set。如果是True, 就表示要持久化存储, 就不清空数据, 否则清空数据
-SCHEDULER_PERSIST = True
+                <p>效果：<br>
+代码中第一个网址：<br>
+<img src="https://leilayz.github.io/post-images/1614677860354.png" alt="" loading="lazy"><br>
+代码中第二个网址：<br>
+<img src="https://leilayz.github.io/post-images/1614677863162.png" alt="" loading="lazy"></p>
+<pre><code>from lxml import etree
+import requests
+import os
+import re
 
-#指定redis
-REDIS_HOST = '127.0.0.1' #redis远程服务器的ip（修改）
-REDIS_PORT = 6379
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+from PIL import Image
+import numpy as np
 
+#需求：解析成语网站成语并形成云图
+if __name__ == &quot;__main__&quot;:
+    # 可在主站中自选网址，但要保证网址内容结构相同
+    # url = 'https://www.lz13.cn/haocihaoju/82945.html'
+    url = 'https://www.lz13.cn/haocihaoju/82942.html'
+
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36'
+    }
+    response = requests.get(url=url, headers=headers)
+    response.encoding = 'utf-8'
+    page_text = response.text
+
+    tree = etree.HTML(page_text)
+    all_city_namelist = tree.xpath('//*[@id=&quot;node-8890&quot;]/div[2]/p')
+
+    all_words = []
+    for a in all_city_namelist:
+        city_name = a.xpath('.//text()')[0]
+        vir = re.findall(r&quot;、(.+?)：&quot;, city_name)
+
+        if len(vir) &gt; 0:
+            all_words.append(vir[0])
+
+    print(all_words, len(all_words))
+
+    # 构造云图字符串
+    wordClouldText = ' '.join(all_words)
+    # 设置蒙版（设定你想要的形状，可设可不设）
+    mask = np.array(Image.open('heart.jpg'))
+    # 中文字体路径（不设置会影响中文显示）
+    font_path = r'C:\Windows\Fonts\SIMHEI.ttf'
+    # 配置云图
+    wc = WordCloud(font_path=font_path,mask=mask, background_color=&quot;white&quot;,scale=3)
+    # 形成云图
+    wc.generate(wordClouldText)
+    plt.imshow(wc, interpolation=&quot;bilinear&quot;)
+    plt.axis('off')
+    plt.show()
 </code></pre>
-<p>爬取到的数据存储在了redis de proName:items这个数据结构中</p>
+<p>蒙版图片：<br>
+<img src="https://leilayz.github.io/post-images/1614677989521.jpg" alt="" loading="lazy"></p>
 
               </div>
               <div class="toc-container">
@@ -207,9 +168,9 @@ REDIS_PORT = 6379
         
           <div class="next-post">
             <div class="next">下一篇</div>
-            <a href="https://leilayz.github.io/post/pa-chong-6-crawlspider-shi-yong/">
+            <a href="https://leilayz.github.io/post/pi-liang-qu-chu-tu-pian-shui-yin/">
               <h3 class="post-title">
-                爬虫（7）—— CrawlSpider使用
+                批量去除图片水印
               </h3>
             </a>
           </div>

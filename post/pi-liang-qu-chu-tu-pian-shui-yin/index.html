@@ -2,23 +2,22 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>爬虫（7）—— 分布式爬虫 | 许愿</title>
+<title>批量去除图片水印 | 许愿</title>
 <link rel="shortcut icon" href="https://leilayz.github.io/favicon.ico?v=1614678084968">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://leilayz.github.io/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="爬虫（7）—— 分布式爬虫 | 许愿 - Atom Feed" href="https://leilayz.github.io/atom.xml">
+<link rel="alternate" type="application/atom+xml" title="批量去除图片水印 | 许愿 - Atom Feed" href="https://leilayz.github.io/atom.xml">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
 
 
 
-    <meta name="description" content="
-概念：搭建一个分布式的机群，让其对一组资源进行分布联合爬取。
-作用：提升效率
+    <meta name="description" content="1. 去除图片底部水印
+函数文件 HandleWatermark.py
+import cv2
+import numpy as np
 
-如何实现分布式？
-
-安装scrapy-redis的组件
-原生的scrapy是不可以实现分布式的，必须要让scrapy结合scrapy-redis组件一起实现分..." />
+# 裁剪掉图片竖直向下边的5%，去掉图片下边的水印
+def eraseWatermark(image_pa..." />
     <meta name="keywords" content="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
@@ -81,124 +80,83 @@
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              爬虫（7）—— 分布式爬虫
+              批量去除图片水印
             </h2>
             <div class="post-info">
               <span>
-                2021-01-02
+                2021-03-02
               </span>
               <span>
-                3 min read
+                2 min read
               </span>
               
             </div>
             
             <div class="post-content-wrapper">
               <div class="post-content">
-                <ol>
-<li>概念：搭建一个分布式的机群，让其对一组资源进行分布联合爬取。</li>
-<li>作用：提升效率</li>
-</ol>
-<p>如何实现分布式？</p>
-<ol>
-<li>安装scrapy-redis的组件</li>
-<li>原生的scrapy是不可以实现分布式的，必须要让scrapy结合scrapy-redis组件一起实现分布式爬虫。</li>
-<li>为什么原生的scrapy不可以实现分布式？
-<ol>
-<li>调度器不可以被分布式集群共享</li>
-<li>管道不可以被分布式集群共享</li>
-</ol>
-</li>
-<li>scrapy-redis组件作用
-<ol>
-<li>可以给原生的scrapy框架提供可以被共享的管道和调度器</li>
-</ol>
-</li>
-<li>流程
-<ol>
-<li>创建一个工程</li>
-<li>修建一个基于CrawlSpider的爬虫文件</li>
-<li>修改当前的爬虫文件：
-<ol>
-<li>导包：from scrapy_redis.spiders import RedisCrawlSpider</li>
-<li>将start_urls和allowed_domains进行注释</li>
-<li>添加一个新属性：redis_key = 'sun' 可以被共享的调度器队列的名称</li>
-<li>编写数据解析相关的操作</li>
-<li>将当前爬虫类的父类修改成RedisCrawSpider</li>
-</ol>
-</li>
-<li>修改配置文件settings
-<ol>
-<li>指定使用可以被共享的管道：</li>
-<li>指定调度器：</li>
-<li>指定redis服务器：</li>
-<li>redis相关操作配置：
-<ol>
-<li>配置redis的配置文件
-<ol>
-<li>linux/mac :redis.conf</li>
-<li>windows:redis.windows.conf</li>
-<li>修改
-<ol>
-<li>将bind 127.0.0.1 注释</li>
-<li>将保护模式关闭：protected-mode yes -&gt; no</li>
-</ol>
-</li>
-<li>结合配置文件，开启redis服务
-<ol>
-<li>redis-server 配置文件<img src="https://leilayz.github.io/post-images/1609652412404.png" alt="" loading="lazy"></li>
-</ol>
-</li>
-<li>启动客户端
-<ol>
-<li>redis-cli<img src="https://leilayz.github.io/post-images/1609652428046.png" alt="" loading="lazy"></li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-<li>执行工程：
-<ol>
-<li>scrapy runspider xxx.py</li>
-<li>向调度器的队列中放入一个起始的url
-<ol>
-<li>调度器的队列在redis的客户端中
-<ol>
-<li>lpush xxx www.xxx.com</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-<pre><code>#指定管道
-ITEM_PIPELINES = {
-    'scrapy_redis.pipelines.RedisPipeline': 400
-}
-#指定调度器
-# 增加了一个去重容器类的配置, 作用使用Redis的set集合来存储请求的指纹数据, 从而实现请求去重的持久化
-DUPEFILTER_CLASS = &quot;scrapy_redis.dupefilter.RFPDupeFilter&quot;
-# 使用scrapy-redis组件自己的调度器
-SCHEDULER = &quot;scrapy_redis.scheduler.Scheduler&quot;
-# 配置调度器是否要持久化, 也就是当爬虫结束了, 要不要清空Redis中请求队列和去重指纹的set。如果是True, 就表示要持久化存储, 就不清空数据, 否则清空数据
-SCHEDULER_PERSIST = True
+                <h1 id="1-去除图片底部水印">1. 去除图片底部水印</h1>
+<p>函数文件 HandleWatermark.py</p>
+<pre><code>import cv2
+import numpy as np
 
-#指定redis
-REDIS_HOST = '127.0.0.1' #redis远程服务器的ip（修改）
-REDIS_PORT = 6379
+# 裁剪掉图片竖直向下边的5%，去掉图片下边的水印
+def eraseWatermark(image_path, new_image_path):
+    # 纯英文路径
+    # img=cv2.imread(image_path,1)
+    # 带中文路径
+    img = cv2.imdecode(np.fromfile(image_path, dtype=np.uint8), 1)
+    hight,width,depth=img.shape[0:3]
+    #截取
+    cropped = img[0:int(0.95*hight), 0:width]  # 裁剪坐标为[y0:y1, x0:x1]
+    # 纯英文路径
+    #cv2.imwrite(new_image_path, cropped)
+    # 中文路径
+    cv2.imencode('.jpg', cropped)[1].tofile(new_image_path)
+</code></pre>
+<p>主函数文件</p>
+<pre><code>import os
+import filetype
+from HandleWatermark import eraseWatermark
+
+# 源路径
+filePath = r'D:\picture\test'
+# 目的路径 （此处需指定目的路径）
+new_filePath = r'D:\picture\test_copy'
+
+if not os.path.exists(new_filePath):
+    os.mkdir(new_filePath)
+
+all_files = []
+new_allfiles = []
+# 获取所有目录及文件
+for root, dirs, files in os.walk(filePath):
+    # 复制所有子目录到新目录
+    for dir_name in dirs:
+        dir_name = os.path.join(root, dir_name)
+        new_dir = new_filePath + dir_name[len(filePath):]
+        if not os.path.exists(new_dir):
+            os.mkdir(new_dir)
+    # 构造所有文件的新路径
+    for name in files:
+        file = os.path.join(root, name)
+        all_files.append(file)
+        new_file = new_filePath + file[len(filePath):]
+        new_allfiles.append(new_file)
+
+for file, new_file in zip(all_files, new_allfiles):
+    print(file, '-&gt;', new_file)
+    if filetype.guess(file) is None or filetype.guess(file).extension != 'jpg':
+        continue
+    eraseWatermark(file, new_file)
 
 </code></pre>
-<p>爬取到的数据存储在了redis de proName:items这个数据结构中</p>
 
               </div>
               <div class="toc-container">
-                
+                <ul class="markdownIt-TOC">
+<li><a href="#1-%E5%8E%BB%E9%99%A4%E5%9B%BE%E7%89%87%E5%BA%95%E9%83%A8%E6%B0%B4%E5%8D%B0">1. 去除图片底部水印</a></li>
+</ul>
+
               </div>
             </div>
           </article>
@@ -207,9 +165,9 @@ REDIS_PORT = 6379
         
           <div class="next-post">
             <div class="next">下一篇</div>
-            <a href="https://leilayz.github.io/post/pa-chong-6-crawlspider-shi-yong/">
+            <a href="https://leilayz.github.io/post/xiao-cheng-xu-kai-fa/">
               <h3 class="post-title">
-                爬虫（7）—— CrawlSpider使用
+                小程序开发
               </h3>
             </a>
           </div>
