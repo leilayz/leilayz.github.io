@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://leilayz.github.io</id>
     <title>许愿</title>
-    <updated>2021-03-02T12:48:07.716Z</updated>
+    <updated>2021-03-02T12:51:34.688Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://leilayz.github.io"/>
     <link rel="self" href="https://leilayz.github.io/atom.xml"/>
@@ -140,67 +140,6 @@ for file, new_file in zip(all_files, new_allfiles):
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[图片水印处理]]></title>
-        <id>https://leilayz.github.io/post/tu-pian-shui-yin-chu-li/</id>
-        <link href="https://leilayz.github.io/post/tu-pian-shui-yin-chu-li/">
-        </link>
-        <updated>2021-03-02T08:56:27.000Z</updated>
-        <content type="html"><![CDATA[<pre><code>import cv2
-import numpy as np
-
-# 裁剪掉图片竖直向下边的5%，去掉图片下边的水印
-def eraseWatermark(image_path, new_image_path):
-    # 纯英文路径
-    # img=cv2.imread(image_path,1)
-    # 带中文路径
-    img = cv2.imdecode(np.fromfile(image_path, dtype=np.uint8), 1)
-    hight,width,depth=img.shape[0:3]
-    #截取
-    cropped = img[0:int(0.95*hight), 0:width]  # 裁剪坐标为[y0:y1, x0:x1]
-    # 纯英文路径
-    #cv2.imwrite(new_image_path, cropped)
-    # 中文路径
-    cv2.imencode('.jpg', cropped)[1].tofile(new_image_path)
-</code></pre>
-<pre><code>import os
-import filetype
-from HandleWatermark import eraseWatermark
-
-# 源路径
-filePath = r'D:\picture\zhongwneluj'
-# 目的路径
-new_filePath = r'D:\picture\zhongwneluj_copy'
-
-if not os.path.exists(new_filePath):
-    os.mkdir(new_filePath)
-
-all_files = []
-new_allfiles = []
-# 获取所有目录及文件
-for root, dirs, files in os.walk(filePath):
-    # 复制所有子目录到新目录
-    for dir_name in dirs:
-        dir_name = os.path.join(root, dir_name)
-        new_dir = new_filePath + dir_name[len(filePath):]
-        if not os.path.exists(new_dir):
-            os.mkdir(new_dir)
-    # 构造所有文件的新路径
-    for name in files:
-        file = os.path.join(root, name)
-        all_files.append(file)
-        new_file = new_filePath + file[len(filePath):]
-        new_allfiles.append(new_file)
-
-for file, new_file in zip(all_files, new_allfiles):
-    print(file, '-&gt;', new_file)
-    if filetype.guess(file) is None or filetype.guess(file).extension != 'jpg':
-        continue
-    eraseWatermark(file, new_file)
-
-</code></pre>
-]]></content>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[MoviePy 初探]]></title>
         <id>https://leilayz.github.io/post/moviepy-chu-tan/</id>
         <link href="https://leilayz.github.io/post/moviepy-chu-tan/">
@@ -289,7 +228,7 @@ for file, new_file in zip(all_files, new_allfiles):
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[爬虫（7）—— 分布式爬虫]]></title>
+        <title type="html"><![CDATA[爬虫（9）—— 分布式爬虫]]></title>
         <id>https://leilayz.github.io/post/pa-chong-7-fen-bu-shi-pa-chong/</id>
         <link href="https://leilayz.github.io/post/pa-chong-7-fen-bu-shi-pa-chong/">
         </link>
@@ -720,6 +659,63 @@ Spider<br>
 </ol>
 </li>
 </ol>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[爬虫（4）——代理与异步]]></title>
+        <id>https://leilayz.github.io/post/pa-chong-4-dai-li/</id>
+        <link href="https://leilayz.github.io/post/pa-chong-4-dai-li/">
+        </link>
+        <updated>2020-12-22T20:44:39.000Z</updated>
+        <content type="html"><![CDATA[<p>代理：破解封ip这种反爬机制。</p>
+<p>什么是代理：<br>
+1. 代理服务器。<br>
+代理的作用：<br>
+1.  突破自身ip访问的限制。<br>
+2.  隐藏自身真实的ip。<br>
+代理相关的网站：<br>
+1. 快代理<br>
+2. 西祠代理<br>
+3. www.goubanjia.com</p>
+<p>代理ip的类型：<br>
+1. http：应用到http协议对应的url中<br>
+2. https: 应用到https协议对应的url中</p>
+<p>代理ip的匿名度：</p>
+<ol>
+<li>透明：服务器知道该次请求使用了代理，也知道该次请求的真实ip。</li>
+<li>匿名：知道使用了代理，不知道真实ip。</li>
+<li>高匿：服务器不知道使用了代理，不知道真实ip。</li>
+</ol>
+<p>高性能异步爬虫：<br>
+目的：在爬虫中使用异步实现高性能的数据爬取操作。</p>
+<p>异步爬虫的方式：</p>
+<ol>
+<li>多线程，多进程（不建议）</li>
+<li>线程池，进程池（适当使用）</li>
+</ol>
+<p>单线程+异步协程（推荐）<br>
+event_loop：事件循环，相当于一个无限循环，我们可以把一些函数注册到这个事件循环上，当满足某些条件的时候，函数就会被循环执行。<br>
+coroutine：协程对象，我们可以将协程对象注册到事件循环中，它会被事件循环调用。我们可以使用async关键字来定义一个方法，这个方法在调用时不会立即被执行，而是返回一个协程对象。</p>
+<p>task：任务，它是对协程对象的进一步封装，包含了任务的各个状态。<br>
+future: 代表将来执行或还没有执行的任务，实际上和task没有本质区别。<br>
+async 定义一个协程<br>
+await 用来挂起阻塞方法的执行</p>
+<p>aiohttp异步网络请求模块使用</p>
+<ol>
+<li>pip install aiohttp</li>
+<li>使用该模块中的ClientSession</li>
+<li>
+<ol>
+<li>text() 返回字符串形式的相应数据</li>
+<li>read() 返回的二进制形式的响应数据</li>
+<li>json() 返回的是json对象</li>
+</ol>
+</li>
+</ol>
+<p>流程：<br>
+<img src="https://leilayz.github.io/post-images/1609217437279.PNG" alt="" loading="lazy"></p>
+<p>如果想要附带参数：<br>
+<img src="https://leilayz.github.io/post-images/1609217559440.PNG" alt="" loading="lazy"></p>
 ]]></content>
     </entry>
 </feed>
