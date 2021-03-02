@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://leilayz.github.io</id>
     <title>许愿</title>
-    <updated>2021-03-02T09:41:32.647Z</updated>
+    <updated>2021-03-02T09:42:25.480Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://leilayz.github.io"/>
     <link rel="self" href="https://leilayz.github.io/atom.xml"/>
@@ -137,6 +137,96 @@ for file, new_file in zip(all_files, new_allfiles):
     eraseWatermark(file, new_file)
 
 </code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[图片水印处理]]></title>
+        <id>https://leilayz.github.io/post/tu-pian-shui-yin-chu-li/</id>
+        <link href="https://leilayz.github.io/post/tu-pian-shui-yin-chu-li/">
+        </link>
+        <updated>2021-03-02T08:56:27.000Z</updated>
+        <content type="html"><![CDATA[<pre><code>import cv2
+import numpy as np
+
+# 裁剪掉图片竖直向下边的5%，去掉图片下边的水印
+def eraseWatermark(image_path, new_image_path):
+    # 纯英文路径
+    # img=cv2.imread(image_path,1)
+    # 带中文路径
+    img = cv2.imdecode(np.fromfile(image_path, dtype=np.uint8), 1)
+    hight,width,depth=img.shape[0:3]
+    #截取
+    cropped = img[0:int(0.95*hight), 0:width]  # 裁剪坐标为[y0:y1, x0:x1]
+    # 纯英文路径
+    #cv2.imwrite(new_image_path, cropped)
+    # 中文路径
+    cv2.imencode('.jpg', cropped)[1].tofile(new_image_path)
+</code></pre>
+<pre><code>import os
+import filetype
+from HandleWatermark import eraseWatermark
+
+# 源路径
+filePath = r'D:\picture\zhongwneluj'
+# 目的路径
+new_filePath = r'D:\picture\zhongwneluj_copy'
+
+if not os.path.exists(new_filePath):
+    os.mkdir(new_filePath)
+
+all_files = []
+new_allfiles = []
+# 获取所有目录及文件
+for root, dirs, files in os.walk(filePath):
+    # 复制所有子目录到新目录
+    for dir_name in dirs:
+        dir_name = os.path.join(root, dir_name)
+        new_dir = new_filePath + dir_name[len(filePath):]
+        if not os.path.exists(new_dir):
+            os.mkdir(new_dir)
+    # 构造所有文件的新路径
+    for name in files:
+        file = os.path.join(root, name)
+        all_files.append(file)
+        new_file = new_filePath + file[len(filePath):]
+        new_allfiles.append(new_file)
+
+for file, new_file in zip(all_files, new_allfiles):
+    print(file, '-&gt;', new_file)
+    if filetype.guess(file) is None or filetype.guess(file).extension != 'jpg':
+        continue
+    eraseWatermark(file, new_file)
+
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[MoviePy 初探]]></title>
+        <id>https://leilayz.github.io/post/moviepy-chu-tan/</id>
+        <link href="https://leilayz.github.io/post/moviepy-chu-tan/">
+        </link>
+        <updated>2021-02-27T11:36:44.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="清华镜像源">清华镜像源：</h1>
+<p>https://pypi.tuna.tsinghua.edu.cn/simple</p>
+<h1 id="启动jupyterlab的命令">启动jupyterLab的命令：</h1>
+<p>jupyter-lab</p>
+<h1 id="网易云音乐下载">网易云音乐下载：</h1>
+<p>第一步打开网易云音乐，随便找到一首歌，播放，复制网址的ID，</p>
+<p>例如：杨钰莹的心雨，网址是：</p>
+<p>http://music.163.com/#/song?id=317151</p>
+<p>很明显，ID是317151</p>
+<p>那么，这首歌的真实地址就是：</p>
+<p>http://music.163.com/song/media/outer/url?id=317151.mp3</p>
+<p>这个地址不会失效的；</p>
+<p>这就得到一个下载公式：</p>
+<p>http://music.163.com/song/media/outer/url?id=ID数字.mp3</p>
+<p>把上面红色部分ID数字换成网易云播放页面的id即可。</p>
+<h1 id="youtube视频下载也适用国内某些视频网站">YouTube视频下载（也适用国内某些视频网站）</h1>
+<p>youtube-dl</p>
+<h1 id="flvmkv格式转mp4">flv/mkv格式转mp4</h1>
+<p>小丸工具箱</p>
+<h1 id="压缩视频">压缩视频</h1>
+<p>小丸工具箱</p>
 ]]></content>
     </entry>
     <entry>
@@ -625,145 +715,6 @@ Spider<br>
 </li>
 </ol>
 </li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[爬虫（4）——代理与异步]]></title>
-        <id>https://leilayz.github.io/post/pa-chong-4-dai-li/</id>
-        <link href="https://leilayz.github.io/post/pa-chong-4-dai-li/">
-        </link>
-        <updated>2020-12-22T20:44:39.000Z</updated>
-        <content type="html"><![CDATA[<p>代理：破解封ip这种反爬机制。</p>
-<p>什么是代理：<br>
-1. 代理服务器。<br>
-代理的作用：<br>
-1.  突破自身ip访问的限制。<br>
-2.  隐藏自身真实的ip。<br>
-代理相关的网站：<br>
-1. 快代理<br>
-2. 西祠代理<br>
-3. www.goubanjia.com</p>
-<p>代理ip的类型：<br>
-1. http：应用到http协议对应的url中<br>
-2. https: 应用到https协议对应的url中</p>
-<p>代理ip的匿名度：</p>
-<ol>
-<li>透明：服务器知道该次请求使用了代理，也知道该次请求的真实ip。</li>
-<li>匿名：知道使用了代理，不知道真实ip。</li>
-<li>高匿：服务器不知道使用了代理，不知道真实ip。</li>
-</ol>
-<p>高性能异步爬虫：<br>
-目的：在爬虫中使用异步实现高性能的数据爬取操作。</p>
-<p>异步爬虫的方式：</p>
-<ol>
-<li>多线程，多进程（不建议）</li>
-<li>线程池，进程池（适当使用）</li>
-</ol>
-<p>单线程+异步协程（推荐）<br>
-event_loop：事件循环，相当于一个无限循环，我们可以把一些函数注册到这个事件循环上，当满足某些条件的时候，函数就会被循环执行。<br>
-coroutine：协程对象，我们可以将协程对象注册到事件循环中，它会被事件循环调用。我们可以使用async关键字来定义一个方法，这个方法在调用时不会立即被执行，而是返回一个协程对象。</p>
-<p>task：任务，它是对协程对象的进一步封装，包含了任务的各个状态。<br>
-future: 代表将来执行或还没有执行的任务，实际上和task没有本质区别。<br>
-async 定义一个协程<br>
-await 用来挂起阻塞方法的执行</p>
-<p>aiohttp异步网络请求模块使用</p>
-<ol>
-<li>pip install aiohttp</li>
-<li>使用该模块中的ClientSession</li>
-<li>
-<ol>
-<li>text() 返回字符串形式的相应数据</li>
-<li>read() 返回的二进制形式的响应数据</li>
-<li>json() 返回的是json对象</li>
-</ol>
-</li>
-</ol>
-<p>流程：<br>
-<img src="https://leilayz.github.io/post-images/1609217437279.PNG" alt="" loading="lazy"></p>
-<p>如果想要附带参数：<br>
-<img src="https://leilayz.github.io/post-images/1609217559440.PNG" alt="" loading="lazy"></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[爬虫（3）——验证码识别]]></title>
-        <id>https://leilayz.github.io/post/pa-chong-3-yan-zheng-ma-shi-bie/</id>
-        <link href="https://leilayz.github.io/post/pa-chong-3-yan-zheng-ma-shi-bie/">
-        </link>
-        <updated>2020-12-20T00:20:27.000Z</updated>
-        <content type="html"><![CDATA[<p>验证码和爬虫之间的爱恨情仇<br>
-反爬机制：验证码。识别验证码图片中的数据，用于模拟登录操作。</p>
-<p>识别验证码的操作：</p>
-<ol>
-<li>人工肉眼识别</li>
-<li>第三方自动识别。
-<ol>
-<li>云打码：平台被ban了</li>
-<li>超级鹰：
-<ol>
-<li>注册：普通和开发者用户</li>
-<li>登录
-<ol>
-<li>普通用户的登录：查询该用户时候还有剩余题分</li>
-<li>开发者用户登录：
-<ol>
-<li>创建一个软件：我的软件-&gt;添加新软件-&gt;录入软件名称-&gt;提交（软件id和密钥）</li>
-<li>下载示例代码：开发文档-&gt;下载示例代码语言</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-<li>实战
-<ol>
-<li>识别古诗文网登陆页面中的验证码。</li>
-</ol>
-</li>
-<li>使用打码平台识别验证码的编码流程：
-<ol>
-<li>将验证码图片进行本地下载</li>
-<li>调用平台提供的示例代码进行图片数据识别</li>
-</ol>
-</li>
-</ol>
-<p>模拟登陆（古诗文网）：</p>
-<ol>
-<li>点击登录发起post请求</li>
-<li>post请求中会携带登陆之前录入的相关的登录信息（用户名，密码，验证码等）</li>
-<li>验证码特性：每次请求都会发生变化</li>
-</ol>
-<p>http/https协议特性：无状态。<br>
-没有请求到对应页面数据的原因：<br>
-发起的第二次基于个人主页页面请求的时候，服务器端并不知道该此请求是基于登录状态下的请求。</p>
-<p>cookie: 用来让服务器端记录客户端的相关状态。</p>
-<ol>
-<li>手动处理：通过抓包工具获取cookie值，并写入到headers内。</li>
-<li>自动处理：
-<ol>
-<li>cookie值来源是哪里？
-<ol>
-<li>模拟登陆post请求后，由服务器端创建</li>
-</ol>
-</li>
-<li>session会话对象：
-<ol>
-<li>作用：可以进行请求的发送。</li>
-<li>如果请求过程中产生了cookie，则该cookie会被自动存储/携带在该session对象中。</li>
-</ol>
-</li>
-<li>步骤
-<ol>
-<li>创建一个session对象： session = requests.Session()</li>
-<li>使用session对象进行模拟登陆post请求的发送（cookie就会被存储在session中）</li>
-<li>session对象对个人主页对一个的get请求进行发送（携带了cookie）<br>
-(未实现)</li>
 </ol>
 </li>
 </ol>

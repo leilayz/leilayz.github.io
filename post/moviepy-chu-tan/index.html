@@ -2,22 +2,22 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>批量去除图片水印 | 许愿</title>
+<title>MoviePy 初探 | 许愿</title>
 <link rel="shortcut icon" href="https://leilayz.github.io/favicon.ico?v=1614678104106">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://leilayz.github.io/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="批量去除图片水印 | 许愿 - Atom Feed" href="https://leilayz.github.io/atom.xml">
+<link rel="alternate" type="application/atom+xml" title="MoviePy 初探 | 许愿 - Atom Feed" href="https://leilayz.github.io/atom.xml">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
 
 
 
-    <meta name="description" content="1. 去除图片底部水印
-函数文件 HandleWatermark.py
-import cv2
-import numpy as np
-
-# 裁剪掉图片竖直向下边的5%，去掉图片下边的水印
-def eraseWatermark(image_pa..." />
+    <meta name="description" content="清华镜像源：
+https://pypi.tuna.tsinghua.edu.cn/simple
+启动jupyterLab的命令：
+jupyter-lab
+网易云音乐下载：
+第一步打开网易云音乐，随便找到一首歌，播放，复制网址的ID，
+例如：..." />
     <meta name="keywords" content="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
@@ -80,81 +80,51 @@ def eraseWatermark(image_pa..." />
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              批量去除图片水印
+              MoviePy 初探
             </h2>
             <div class="post-info">
               <span>
-                2021-03-02
+                2021-02-27
               </span>
               <span>
-                2 min read
+                1 min read
               </span>
               
             </div>
             
             <div class="post-content-wrapper">
               <div class="post-content">
-                <h1 id="1-去除图片底部水印">1. 去除图片底部水印</h1>
-<p>函数文件 HandleWatermark.py</p>
-<pre><code>import cv2
-import numpy as np
-
-# 裁剪掉图片竖直向下边的5%，去掉图片下边的水印
-def eraseWatermark(image_path, new_image_path):
-    # 纯英文路径
-    # img=cv2.imread(image_path,1)
-    # 带中文路径
-    img = cv2.imdecode(np.fromfile(image_path, dtype=np.uint8), 1)
-    hight,width,depth=img.shape[0:3]
-    #截取
-    cropped = img[0:int(0.95*hight), 0:width]  # 裁剪坐标为[y0:y1, x0:x1]
-    # 纯英文路径
-    #cv2.imwrite(new_image_path, cropped)
-    # 中文路径
-    cv2.imencode('.jpg', cropped)[1].tofile(new_image_path)
-</code></pre>
-<p>主函数文件</p>
-<pre><code>import os
-import filetype
-from HandleWatermark import eraseWatermark
-
-# 源路径
-filePath = r'D:\picture\test'
-# 目的路径 （此处需指定目的路径）
-new_filePath = r'D:\picture\test_copy'
-
-if not os.path.exists(new_filePath):
-    os.mkdir(new_filePath)
-
-all_files = []
-new_allfiles = []
-# 获取所有目录及文件
-for root, dirs, files in os.walk(filePath):
-    # 复制所有子目录到新目录
-    for dir_name in dirs:
-        dir_name = os.path.join(root, dir_name)
-        new_dir = new_filePath + dir_name[len(filePath):]
-        if not os.path.exists(new_dir):
-            os.mkdir(new_dir)
-    # 构造所有文件的新路径
-    for name in files:
-        file = os.path.join(root, name)
-        all_files.append(file)
-        new_file = new_filePath + file[len(filePath):]
-        new_allfiles.append(new_file)
-
-for file, new_file in zip(all_files, new_allfiles):
-    print(file, '-&gt;', new_file)
-    if filetype.guess(file) is None or filetype.guess(file).extension != 'jpg':
-        continue
-    eraseWatermark(file, new_file)
-
-</code></pre>
+                <h1 id="清华镜像源">清华镜像源：</h1>
+<p>https://pypi.tuna.tsinghua.edu.cn/simple</p>
+<h1 id="启动jupyterlab的命令">启动jupyterLab的命令：</h1>
+<p>jupyter-lab</p>
+<h1 id="网易云音乐下载">网易云音乐下载：</h1>
+<p>第一步打开网易云音乐，随便找到一首歌，播放，复制网址的ID，</p>
+<p>例如：杨钰莹的心雨，网址是：</p>
+<p>http://music.163.com/#/song?id=317151</p>
+<p>很明显，ID是317151</p>
+<p>那么，这首歌的真实地址就是：</p>
+<p>http://music.163.com/song/media/outer/url?id=317151.mp3</p>
+<p>这个地址不会失效的；</p>
+<p>这就得到一个下载公式：</p>
+<p>http://music.163.com/song/media/outer/url?id=ID数字.mp3</p>
+<p>把上面红色部分ID数字换成网易云播放页面的id即可。</p>
+<h1 id="youtube视频下载也适用国内某些视频网站">YouTube视频下载（也适用国内某些视频网站）</h1>
+<p>youtube-dl</p>
+<h1 id="flvmkv格式转mp4">flv/mkv格式转mp4</h1>
+<p>小丸工具箱</p>
+<h1 id="压缩视频">压缩视频</h1>
+<p>小丸工具箱</p>
 
               </div>
               <div class="toc-container">
                 <ul class="markdownIt-TOC">
-<li><a href="#1-%E5%8E%BB%E9%99%A4%E5%9B%BE%E7%89%87%E5%BA%95%E9%83%A8%E6%B0%B4%E5%8D%B0">1. 去除图片底部水印</a></li>
+<li><a href="#%E6%B8%85%E5%8D%8E%E9%95%9C%E5%83%8F%E6%BA%90">清华镜像源：</a></li>
+<li><a href="#%E5%90%AF%E5%8A%A8jupyterlab%E7%9A%84%E5%91%BD%E4%BB%A4">启动jupyterLab的命令：</a></li>
+<li><a href="#%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E4%B8%8B%E8%BD%BD">网易云音乐下载：</a></li>
+<li><a href="#youtube%E8%A7%86%E9%A2%91%E4%B8%8B%E8%BD%BD%E4%B9%9F%E9%80%82%E7%94%A8%E5%9B%BD%E5%86%85%E6%9F%90%E4%BA%9B%E8%A7%86%E9%A2%91%E7%BD%91%E7%AB%99">YouTube视频下载（也适用国内某些视频网站）</a></li>
+<li><a href="#flvmkv%E6%A0%BC%E5%BC%8F%E8%BD%ACmp4">flv/mkv格式转mp4</a></li>
+<li><a href="#%E5%8E%8B%E7%BC%A9%E8%A7%86%E9%A2%91">压缩视频</a></li>
 </ul>
 
               </div>
@@ -165,9 +135,9 @@ for file, new_file in zip(all_files, new_allfiles):
         
           <div class="next-post">
             <div class="next">下一篇</div>
-            <a href="https://leilayz.github.io/post/tu-pian-shui-yin-chu-li/">
+            <a href="https://leilayz.github.io/post/xiao-cheng-xu-kai-fa/">
               <h3 class="post-title">
-                图片水印处理
+                小程序开发
               </h3>
             </a>
           </div>

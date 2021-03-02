@@ -2,22 +2,22 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>批量去除图片水印 | 许愿</title>
+<title>图片水印处理 | 许愿</title>
 <link rel="shortcut icon" href="https://leilayz.github.io/favicon.ico?v=1614678104106">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://leilayz.github.io/styles/main.css">
-<link rel="alternate" type="application/atom+xml" title="批量去除图片水印 | 许愿 - Atom Feed" href="https://leilayz.github.io/atom.xml">
+<link rel="alternate" type="application/atom+xml" title="图片水印处理 | 许愿 - Atom Feed" href="https://leilayz.github.io/atom.xml">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
 
 
 
-    <meta name="description" content="1. 去除图片底部水印
-函数文件 HandleWatermark.py
-import cv2
+    <meta name="description" content="import cv2
 import numpy as np
 
 # 裁剪掉图片竖直向下边的5%，去掉图片下边的水印
-def eraseWatermark(image_pa..." />
+def eraseWatermark(image_path, new_image_path):
+    # 纯英文路径
+   ..." />
     <meta name="keywords" content="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
@@ -80,7 +80,7 @@ def eraseWatermark(image_pa..." />
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              批量去除图片水印
+              图片水印处理
             </h2>
             <div class="post-info">
               <span>
@@ -94,9 +94,7 @@ def eraseWatermark(image_pa..." />
             
             <div class="post-content-wrapper">
               <div class="post-content">
-                <h1 id="1-去除图片底部水印">1. 去除图片底部水印</h1>
-<p>函数文件 HandleWatermark.py</p>
-<pre><code>import cv2
+                <pre><code>import cv2
 import numpy as np
 
 # 裁剪掉图片竖直向下边的5%，去掉图片下边的水印
@@ -113,15 +111,14 @@ def eraseWatermark(image_path, new_image_path):
     # 中文路径
     cv2.imencode('.jpg', cropped)[1].tofile(new_image_path)
 </code></pre>
-<p>主函数文件</p>
 <pre><code>import os
 import filetype
 from HandleWatermark import eraseWatermark
 
 # 源路径
-filePath = r'D:\picture\test'
-# 目的路径 （此处需指定目的路径）
-new_filePath = r'D:\picture\test_copy'
+filePath = r'D:\picture\zhongwneluj'
+# 目的路径
+new_filePath = r'D:\picture\zhongwneluj_copy'
 
 if not os.path.exists(new_filePath):
     os.mkdir(new_filePath)
@@ -153,10 +150,7 @@ for file, new_file in zip(all_files, new_allfiles):
 
               </div>
               <div class="toc-container">
-                <ul class="markdownIt-TOC">
-<li><a href="#1-%E5%8E%BB%E9%99%A4%E5%9B%BE%E7%89%87%E5%BA%95%E9%83%A8%E6%B0%B4%E5%8D%B0">1. 去除图片底部水印</a></li>
-</ul>
-
+                
               </div>
             </div>
           </article>
@@ -165,9 +159,9 @@ for file, new_file in zip(all_files, new_allfiles):
         
           <div class="next-post">
             <div class="next">下一篇</div>
-            <a href="https://leilayz.github.io/post/tu-pian-shui-yin-chu-li/">
+            <a href="https://leilayz.github.io/post/moviepy-chu-tan/">
               <h3 class="post-title">
-                图片水印处理
+                MoviePy 初探
               </h3>
             </a>
           </div>
