@@ -3,7 +3,7 @@
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>爬虫（8）—— 增量式爬虫 | 许愿</title>
-<link rel="shortcut icon" href="https://leilayz.github.io/favicon.ico?v=1609660502804">
+<link rel="shortcut icon" href="https://leilayz.github.io/favicon.ico?v=1614689513554">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://leilayz.github.io/styles/main.css">
 <link rel="alternate" type="application/atom+xml" title="爬虫（8）—— 增量式爬虫 | 许愿 - Atom Feed" href="https://leilayz.github.io/atom.xml">
@@ -12,7 +12,13 @@
 
 
     <meta name="description" content="概念：检测网站数据更新情况，只会爬取网站最新更新出来的数据。
-" />
+分析：
+
+指定起始url
+基于crawlspider获取其他页码链接
+基于Rule将其他页码链接进行请求
+从每一个页码对应的页面源码中解析出每一个电影详情页的URL
+核心： 检测..." />
     <meta name="keywords" content="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
     <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
@@ -22,7 +28,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="https://leilayz.github.io">
-  <img class="avatar" src="https://leilayz.github.io/images/avatar.png?v=1609660502804" alt="">
+  <img class="avatar" src="https://leilayz.github.io/images/avatar.png?v=1614689513554" alt="">
   </a>
   <h1 class="site-title">
     许愿
@@ -89,7 +95,25 @@
             
             <div class="post-content-wrapper">
               <div class="post-content">
-                <p>概念：检测网站数据更新情况，只会爬取网站最新更新出来的数据。</p>
+                <p>概念：检测网站数据更新情况，只会爬取网站最新更新出来的数据。<br>
+分析：</p>
+<ol>
+<li>指定起始url</li>
+<li>基于crawlspider获取其他页码链接</li>
+<li>基于Rule将其他页码链接进行请求</li>
+<li>从每一个页码对应的页面源码中解析出每一个电影详情页的URL</li>
+<li>核心： 检测电影详情页的url之前有没有请求过
+<ol>
+<li>将爬取过的电影详情页的URL存储
+<ol>
+<li>存储到redis的set数据结构中</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>对详情页的URL发起请求，然后解析出电影的名称和简介</li>
+<li>进行持久化存储</li>
+</ol>
 
               </div>
               <div class="toc-container">
